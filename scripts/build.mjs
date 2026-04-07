@@ -20,9 +20,11 @@ const faqEntries = extractSubsections(getSection("FAQ"), "FAQ");
 const pipelineFaq = faqEntries.find((entry) => entry.title === "How are the agents harnessed?");
 const pipelineBlocks = pipelineFaq ? parseBlocks(pipelineFaq.body) : [];
 const portStatusBlocks = parseBlocks(getSection("Port Status"));
-const compatibilityBlocks = parseBlocks(getSection("Compatibility Contract"));
-const compatibilityItems = extractListItems(getSection("Compatibility Contract"), "Compatibility Contract");
-const verificationText = getSubsection(getSection("Compatibility Contract"), "Verification Philosophy");
+const compatibilitySection = getSection("Compatibility Contract");
+const compatibilityLeadText = getSectionLead(compatibilitySection);
+const compatibilityBlocks = parseBlocks(compatibilityLeadText);
+const compatibilityItems = extractListItems(compatibilityLeadText, "Compatibility Contract");
+const verificationText = getSubsection(compatibilitySection, "Verification Philosophy");
 const verificationBlocks = parseBlocks(verificationText);
 const verificationItems = extractListItems(verificationText, "Verification Philosophy");
 const warningFaq = faqEntries.find((entry) => entry.title === "Do you guarantee I won't get hacked?");
@@ -367,6 +369,11 @@ function getSubsection(sectionBody, name) {
   return matchRequired(text, pattern, `subsection ${name}`)[1].trim();
 }
 
+function getSectionLead(sectionBody) {
+  const text = `${sectionBody}\n### __END__`;
+  return text.split(/^### /m)[0].trim();
+}
+
 function extractSubsections(sectionBody, sectionName) {
   const text = `${sectionBody}\n### __END__`;
   const entries = [...text.matchAll(/^### (.+)\n([\s\S]*?)(?=^### )/gm)].map((match) => ({
@@ -497,13 +504,13 @@ function renderInline(text) {
   output = output.replace(/_([^_]+)_/g, "<em>$1</em>");
 
   return placeholders.reduce(
-    (value, html, index) => value.replaceAll(`__PLACEHOLDER_${index}__`, html),
+    (value, html, index) => value.replaceAll(`@@PLACEHOLDER${index}@@`, html),
     output
   );
 
   function placeholder(html) {
     const index = placeholders.push(html) - 1;
-    return `__PLACEHOLDER_${index}__`;
+    return `@@PLACEHOLDER${index}@@`;
   }
 }
 

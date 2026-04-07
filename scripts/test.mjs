@@ -43,6 +43,32 @@ for (const snippet of expectations) {
   }
 }
 
-if (html.includes("__PLACEHOLDER_") || html.includes("undefined")) {
+if (html.includes("PLACEHOLDER") || html.includes("undefined")) {
   throw new Error("Build output contains unresolved placeholders or undefined values");
+}
+
+const exactOccurrences = [
+  ["Run baseline tests against the original Ubuntu C library package.", 1],
+  ["Binary-compatible exported symbols.", 1],
+  ["### Verification Philosophy", 0]
+];
+
+for (const [snippet, expectedCount] of exactOccurrences) {
+  const actualCount = html.split(snippet).length - 1;
+  if (actualCount !== expectedCount) {
+    throw new Error(`Expected ${expectedCount} occurrence(s) of \"${snippet}\", found ${actualCount}`);
+  }
+}
+
+const renderingExpectations = [
+  "Install SafeLibs-generated <code>.deb</code> replacements.",
+  "or the <code>unsafe</code> parts of these libraries",
+  "<em>I</em> don&#39;t use these things",
+  "<p>A completed SafeLibs port should provide:</p>"
+];
+
+for (const snippet of renderingExpectations) {
+  if (!html.includes(snippet)) {
+    throw new Error(`Missing expected rendered snippet: ${snippet}`);
+  }
 }
