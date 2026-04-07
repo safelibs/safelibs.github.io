@@ -84,7 +84,9 @@ The pipeline itself lives in https://github.com/safelibs/pipeline
 
 ## Port Status
 
-TODO: get the status of the repos
+As of April 7, 2026, the SafeLibs org has 23 `port-*` repositories under active work.
+They are all private right now, so this public site is intentionally not pretending to have a live public scoreboard yet.
+When the verification artifacts are ready to expose, this section should show actual compatibility results instead of vibes.
 
 ## Compatibility Contract
 

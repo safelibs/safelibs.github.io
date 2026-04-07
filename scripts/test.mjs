@@ -47,6 +47,10 @@ if (html.includes("PLACEHOLDER") || html.includes("undefined")) {
   throw new Error("Build output contains unresolved placeholders or undefined values");
 }
 
+if (html.includes("TODO:")) {
+  throw new Error("Build output still contains TODO placeholder text");
+}
+
 const exactOccurrences = [
   ["Run baseline tests against the original Ubuntu C library package.", 1],
   ["Binary-compatible exported symbols.", 1],
@@ -64,7 +68,8 @@ const renderingExpectations = [
   "Install SafeLibs-generated <code>.deb</code> replacements.",
   "or the <code>unsafe</code> parts of these libraries",
   "<em>I</em> don&#39;t use these things",
-  "<p>A completed SafeLibs port should provide:</p>"
+  "<p>A completed SafeLibs port should provide:</p>",
+  "As of April 7, 2026, the SafeLibs org has 23 <code>port-*</code> repositories under active work."
 ];
 
 for (const snippet of renderingExpectations) {

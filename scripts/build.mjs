@@ -275,9 +275,9 @@ const html = `<!doctype html>
           <div class="section-head">
             <div>
               <p class="eyebrow">Port status</p>
-              <h2>Status board pending first ports</h2>
+              <h2>Real port work, intentionally sparse public status</h2>
             </div>
-            <p>No fake progress bars here. The board should appear only once there are real published ports and actual compatibility results to show.</p>
+            <p>The org already has active port repos. This page just refuses to fake a glossy public scoreboard before the verification data is ready to be shown.</p>
           </div>
           <article class="status-card">
             <h3>Current signal</h3>
