@@ -1,0 +1,10 @@
+{
+  "name": "safelibs-github-io",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SafeLibs GitHub Pages site generated from contents.md",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/test.mjs"
+  }
+}
