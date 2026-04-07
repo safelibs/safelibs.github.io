@@ -26,10 +26,15 @@ const html = await readFile(join(rootDir, "dist", "index.html"), "utf8");
 
 const expectations = [
   "<title>SafeLibs | Memory-safe drop-in replacements</title>",
-  "Agents, but with a harness on",
-  "Sharp edges acknowledged",
-  "safelibs.github.io",
+  "<h2>Mission</h2>",
+  "<h2>Maintainability</h2>",
+  "<h2>Pipeline</h2>",
+  "<h2>Project Structure</h2>",
+  "<h2>Port Status</h2>",
+  "<h2>Compatibility Contract</h2>",
+  "<h2>FAQ</h2>",
   "Generated from <code>contents.md</code>",
+  "How are the agents harnessed?",
   "rofl",
   "Recon",
   "Setup",
@@ -54,7 +59,8 @@ if (html.includes("TODO:")) {
 const exactOccurrences = [
   ["Run baseline tests against the original Ubuntu C library package.", 1],
   ["Binary-compatible exported symbols.", 1],
-  ["### Verification Philosophy", 0]
+  ["### Verification Philosophy", 0],
+  ["How are the agents harnessed?", 1]
 ];
 
 for (const [snippet, expectedCount] of exactOccurrences) {
@@ -65,15 +71,30 @@ for (const [snippet, expectedCount] of exactOccurrences) {
 }
 
 const renderingExpectations = [
+  "<p>SafeLibs builds memory-safe (Rust) reimplementations of critical load-bearing C/C++ libraries used throughout open source infrastructure, while attempting to preserve drop-in compatibility at compile-time and runtime.</p>",
   "Install SafeLibs-generated <code>.deb</code> replacements.",
   "or the <code>unsafe</code> parts of these libraries",
   "<em>I</em> don&#39;t use these things",
   "<p>A completed SafeLibs port should provide:</p>",
-  "As of April 7, 2026, the SafeLibs org has 23 <code>port-*</code> repositories under active work."
+  "As of April 7, 2026, the SafeLibs org has 23 <code>port-*</code> repositories under active work.",
+  "href=\"https://github.com/safelibs/safelibs.github.io\" target=\"_blank\" rel=\"noreferrer\">https://github.com/safelibs/safelibs.github.io</a>"
 ];
 
 for (const snippet of renderingExpectations) {
   if (!html.includes(snippet)) {
     throw new Error(`Missing expected rendered snippet: ${snippet}`);
+  }
+}
+
+const removedSnippets = [
+  "Agents, but with a harness on",
+  "Sharp edges acknowledged",
+  "Serious about compatibility. Honest about risk.",
+  "Real port work, intentionally sparse public status"
+];
+
+for (const snippet of removedSnippets) {
+  if (html.includes(snippet)) {
+    throw new Error(`Found removed editorial snippet: ${snippet}`);
   }
 }
