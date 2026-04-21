@@ -52,6 +52,7 @@ const html = `<!doctype html>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://safelibs.github.io/">
     <meta name="theme-color" content="#071018">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23071018'/%3E%3Cpath d='M18 43h28v-8H28c-5 0-9-4-9-9s4-9 9-9h18v8H28c-1 0-1 .5-1 1s.5 1 1 1h8c6 0 10 4 10 9s-4 7-10 7H18z' fill='%2351d4b9'/%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -63,7 +64,7 @@ const html = `<!doctype html>
   </head>
   <body>
     <div class="site-shell">
-      <header class="site-header" data-reveal>
+      <header class="site-header">
         <a class="brand" href="#top" aria-label="${escapeHtml(title)} home">
           <span class="brand-mark">SL</span>
           <span class="brand-copy">
@@ -81,7 +82,7 @@ const html = `<!doctype html>
       </header>
 
       <main class="site-main">
-        <section class="hero" id="top" data-reveal>
+        <section class="hero" id="top">
           <p class="eyebrow">Generated from <code>contents.md</code></p>
           <h1>${escapeHtml(title)}</h1>
           <div class="hero-copy">
@@ -93,7 +94,7 @@ const html = `<!doctype html>
           </div>
         </section>
 
-        <section class="section" id="mission" data-reveal>
+        <section class="section" id="mission">
           <div class="section-heading">
             <h2>Mission</h2>
           </div>
@@ -110,7 +111,7 @@ const html = `<!doctype html>
           </div>
         </section>
 
-        <section class="section" id="maintainability" data-reveal>
+        <section class="section" id="maintainability">
           <div class="section-heading">
             <h2>Maintainability</h2>
           </div>
@@ -126,7 +127,7 @@ const html = `<!doctype html>
           </div>
         </section>
 
-        <section class="section" id="pipeline" data-reveal>
+        <section class="section" id="pipeline">
           <div class="section-heading">
             <h2>Pipeline</h2>
           </div>
@@ -150,7 +151,7 @@ const html = `<!doctype html>
           </div>
         </section>
 
-        <section class="section" id="structure" data-reveal>
+        <section class="section" id="structure">
           <div class="section-heading">
             <h2>Project Structure</h2>
           </div>
@@ -159,7 +160,7 @@ const html = `<!doctype html>
           </article>
         </section>
 
-        <section class="section" id="status" data-reveal>
+        <section class="section" id="status">
           <div class="section-heading">
             <h2>Port Status</h2>
           </div>
@@ -168,7 +169,7 @@ const html = `<!doctype html>
           </article>
         </section>
 
-        <section class="section" id="effort" data-reveal>
+        <section class="section" id="effort">
           <div class="section-heading">
             <h2>Port Effort Stats</h2>
           </div>
@@ -177,7 +178,7 @@ const html = `<!doctype html>
           </article>
         </section>
 
-        <section class="section" id="contract" data-reveal>
+        <section class="section" id="contract">
           <div class="section-heading">
             <h2>Compatibility Contract</h2>
           </div>
@@ -192,7 +193,7 @@ const html = `<!doctype html>
           </div>
         </section>
 
-        <section class="section" id="faq" data-reveal>
+        <section class="section" id="faq">
           <div class="section-heading">
             <h2>FAQ</h2>
           </div>
@@ -213,7 +214,7 @@ const html = `<!doctype html>
         </section>
       </main>
 
-      <footer class="site-footer" data-reveal>
+      <footer class="site-footer">
         <p class="footer-copy">Generated from <code>contents.md</code>.</p>
         <p class="footer-note">
           Built from source text on

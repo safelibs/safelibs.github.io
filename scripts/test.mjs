@@ -35,6 +35,7 @@ const expectations = [
   "<h2>Compatibility Contract</h2>",
   "<h2>FAQ</h2>",
   "Generated from <code>contents.md</code>",
+  "<link rel=\"icon\" href=\"data:image/svg+xml,",
   "How are the agents harnessed?",
   "rofl",
   "Recon",
@@ -55,6 +56,25 @@ if (html.includes("PLACEHOLDER") || html.includes("undefined")) {
 
 if (html.includes("TODO:")) {
   throw new Error("Build output still contains TODO placeholder text");
+}
+
+const css = await readFile(join(rootDir, "dist", "styles.css"), "utf8");
+const script = await readFile(join(rootDir, "dist", "script.js"), "utf8");
+
+const removedRevealSnippets = [
+  [html, "data-reveal", "HTML should render all content immediately"],
+  [css, "[data-reveal]", "CSS should not hide content behind reveal rules"],
+  [css, "is-visible", "CSS should not depend on reveal visibility classes"],
+  [css, "translateY(", "CSS should not move content into view as a reveal effect"],
+  [css, "scroll-behavior: smooth", "CSS should leave in-page navigation immediate"],
+  [script, "IntersectionObserver", "JavaScript should not gate content visibility on IntersectionObserver"],
+  [script, "document.documentElement.classList.add(\"js\")", "JavaScript should not enable hidden-js reveal states"]
+];
+
+for (const [content, snippet, message] of removedRevealSnippets) {
+  if (content.includes(snippet)) {
+    throw new Error(`${message}: found ${snippet}`);
+  }
 }
 
 const exactOccurrences = [
