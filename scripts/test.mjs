@@ -79,10 +79,13 @@ const renderingExpectations = [
   "<em>I</em> don&#39;t use these things",
   "<p>A completed SafeLibs port should provide:</p>",
   "As of April 21, 2026, the SafeLibs org has 24 library <code>port-*</code> repositories under active work",
-  "The direct library-workspace archive covers 6,343 sessions, 20.09B total tokens, and 1,140.6 agent-hours",
+  "That cuts out the older root-level prototype runs in <code>/home/yans/code/safelibs</code>",
+  "The current-repo archive covers 6,251 sessions, 19.93B total tokens, and 1,129.5 agent-hours",
+  "Across those sessions, the stage token split is 2.63B recon, 2.90B setup, 8.50B port, and 5.90B test.",
   "<table class=\"stats-table\">",
-  "<th scope=\"row\"><code>libssl</code></th><td><code>archive-only</code></td>",
-  "<th scope=\"row\"><code>libzstd</code></th><td><code>04-test</code></td><td class=\"numeric\">281</td><td class=\"numeric\">1,775.7M</td>",
+  "<th scope=\"col\">Recon tokens</th>",
+  "<th scope=\"row\"><code>libzstd</code></th><td><code>04-test</code></td><td class=\"numeric\">281</td><td class=\"numeric\">1,775.7M</td><td class=\"numeric\">1.7M</td><td class=\"numeric\">210.7M</td><td class=\"numeric\">514.4M</td><td class=\"numeric\">1,048.9M</td>",
+  "GIRepository, symbol versions, Meson/package surfaces, and staged runtime checks already forced repeated verifier cycles.",
   "href=\"https://github.com/safelibs/safelibs.github.io\" target=\"_blank\" rel=\"noreferrer\">https://github.com/safelibs/safelibs.github.io</a>"
 ];
 
@@ -96,7 +99,8 @@ const removedSnippets = [
   "Agents, but with a harness on",
   "Sharp edges acknowledged",
   "Serious about compatibility. Honest about risk.",
-  "Real port work, intentionally sparse public status"
+  "Real port work, intentionally sparse public status",
+  "<th scope=\"row\"><code>libssl</code></th>"
 ];
 
 for (const snippet of removedSnippets) {

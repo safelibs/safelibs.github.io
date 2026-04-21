@@ -91,42 +91,47 @@ When the verification artifacts are ready to expose, this section should show ac
 ## Port Effort Stats
 
 These statistics were extracted from `~/codex_sessions.bak` on April 21, 2026.
-They count Codex JSONL sessions whose metadata points directly at a library workspace under `/home/yans/code/safelibs/ported/<library>` or `/home/yans/safelibs/port-<library>`.
-Generic root-level orchestration sessions were omitted to avoid attributing shared work to the wrong library.
+They count Codex JSONL sessions whose metadata points directly at a current library workspace under `/home/yans/code/safelibs/ported/<library>` or `/home/yans/safelibs/port-<library>`.
+For each current `port-*` repository, sessions earlier than that repository's first commit were excluded.
+That cuts out the older root-level prototype runs in `/home/yans/code/safelibs`, including the February `libzstd`, `libyaml`, `libpng`, `libsodium`, `libjpeg-turbo`, `libcurl`, `libbz2`, and `giflib` attempts: 315 sessions and 646.9M tokens in total.
+Generic root-level orchestration sessions were omitted to avoid attributing shared work to the wrong library, and the archive-only `libssl` run was omitted because there is no current `port-libssl` repository.
 Token counts are summed from each session's final `total_token_usage.total_tokens`; cached input tokens are included in those totals.
-Agent time is the sum of per-session wall time, so parallel sessions intentionally count as parallel agent-hours.
-Calendar span is the first-to-last timestamp range for that library's counted sessions.
+Agent time is the sum of per-session task wall time, so parallel sessions intentionally count as parallel agent-hours.
+Calendar span is the first counted session start to the last counted session start for that library.
 
-The direct library-workspace archive covers 6,343 sessions, 20.09B total tokens, and 1,140.6 agent-hours from March 27, 2026 through April 11, 2026.
-It includes 25 archive-backed library directories; `libssl` is archive-only because there is no current `port-libssl` repository.
+Stage token buckets use the current repo's `01-recon`, `02-setup`, `03-port`, and `04-test` tag cutovers.
+If a repo has not completed a later stage, sessions after the last completed tag are counted toward the next in-progress stage bucket.
+That is why `glib`, `libc6`, and `libcurl` have port-token spend even though their completed stage is still `02-setup`, and why `libgcrypt` has test-token spend while completed at `03-port`.
 
-| Library | Stage | Sessions | Tokens | Agent time | Calendar span | Difficulty signal |
-| --- | --- | ---: | ---: | ---: | ---: | --- |
-| `cjson` | `04-test` | 121 | 292.5M | 18.0h | 17.2h | Small C API; effort concentrated in final hardening and release checks. |
-| `giflib` | `04-test` | 202 | 281.5M | 22.6h | 22.2h | Regression closure around tools and downstream harnesses outweighed core decode size. |
-| `glib` | `02-setup` | 359 | 1,642.0M | 88.7h | 90.6h | GIRepository exports, symbol versions, and staged runtime checks caused repeated verifier churn. |
-| `libarchive` | `04-test` | 294 | 731.3M | 37.1h | 35.1h | Broad archive formats, CVE metadata, and imported-test cleanup made closure wide. |
-| `libbz2` | `04-test` | 157 | 237.0M | 18.0h | 16.9h | Small compression surface; most work was workflow consistency and release hardening. |
-| `libc6` | `02-setup` | 152 | 704.9M | 45.2h | 59.3h | Huge libc harness; per-test environment and relocated container support were blockers. |
-| `libcsv` | `04-test` | 96 | 121.4M | 10.9h | 10.1h | Narrowest port; upstream-behavior checks kept the effort small. |
-| `libcurl` | `02-setup` | 290 | 1,364.3M | 79.2h | 90.6h | Protocols, TLS session reuse, benchmarks, and dependent apps drove high effort. |
-| `libexif` | `04-test` | 840 | 986.7M | 73.3h | 93.0h | Metadata corpus and release-gate validation produced the most checker sessions. |
-| `libgcrypt` | `03-port` | 313 | 1,420.7M | 76.8h | 91.3h | Crypto API coverage plus no-upstream-bridge auditing made closure risky. |
-| `libjansson` | `04-test` | 219 | 330.8M | 28.4h | 69.9h | Moderate API; relink/object checks and loader success paths mattered most. |
-| `libjpeg-turbo` | `04-test` | 255 | 804.2M | 72.2h | 58.5h | SIMD, command-line tools, package contracts, and bridge removal dominated. |
-| `libjson` | `04-test` | 143 | 328.7M | 23.2h | 21.9h | Static archive/layout checks and Debian/autopkgtest gaps drove the finish. |
-| `liblzma` | `04-test` | 120 | 470.7M | 21.1h | 19.2h | Compression API plus full fmt, clippy, tests, and ABI gates. |
-| `libpng` | `04-test` | 170 | 1,212.5M | 58.1h | 69.2h | Dependent matrix and C-shim boundaries for longjmp/read phases were the hard parts. |
-| `libsdl` | `04-test` | 257 | 1,245.4M | 56.4h | 46.2h | Input/device runtime tests and dependent applications made validation complex. |
-| `libsodium` | `04-test` | 136 | 276.7M | 18.8h | 18.2h | Crypto primitive coverage with a comparatively compact API surface. |
-| `libssl` | `archive-only` | 92 | 159.3M | 12.5h | 11.9h | Archive-only OpenSSL attempt; support-root bootstrap and packaging contracts dominated. |
-| `libtiff` | `04-test` | 204 | 577.5M | 30.7h | 27.4h | TIFF utilities, package surface, and EXIF fixture cleanup shaped closure. |
-| `libuv` | `04-test` | 532 | 1,489.1M | 80.2h | 101.5h | Async fs, network, process, and unsafe-boundary checks drove sustained effort. |
-| `libvips` | `04-test` | 186 | 1,111.9M | 45.0h | 42.5h | Large image-processing dependency graph and final fixups kept effort high. |
-| `libwebp` | `04-test` | 154 | 390.8M | 20.8h | 20.5h | Codec, mux, animation, DT_NEEDED, and link-fixture checks were central. |
-| `libxml` | `04-test` | 463 | 1,757.6M | 84.9h | 75.5h | Broad parser/ABI surface and workflow/template gates drove one of the largest runs. |
-| `libyaml` | `04-test` | 307 | 376.3M | 33.9h | 37.9h | Parser codegen plus artifact-contract consistency, but relatively contained runtime scope. |
-| `libzstd` | `04-test` | 281 | 1,775.7M | 84.8h | 128.6h | Largest run; CLI/library/dependent-package image and release entry points dominated. |
+The current-repo archive covers 6,251 sessions, 19.93B total tokens, and 1,129.5 agent-hours from March 27, 2026 through April 11, 2026 UTC.
+Across those sessions, the stage token split is 2.63B recon, 2.90B setup, 8.50B port, and 5.90B test.
+
+| Library | Completed stage | Sessions | Total tokens | Recon tokens | Setup tokens | Port tokens | Test tokens | Agent time | Calendar span | Difficulty notes |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| `cjson` | `04-test` | 121 | 292.5M | 3.8M | 77.1M | 93.7M | 117.8M | 18.1h | 17.1h | Small C API, but setup and test still needed public-API rewrites, ABI packaging checks, and final release hardening. |
+| `giflib` | `04-test` | 202 | 281.5M | 2.5M | 56.2M | 121.4M | 101.4M | 22.7h | 22.2h | Decoder scope was modest; command-line tools, installed utility behavior, and downstream harness closure consumed the hard work. |
+| `glib` | `02-setup` | 359 | 1,642.0M | 625.8M | 95.5M | 920.8M | - | 87.4h | 89.7h | The run is still pre-port-completion, but GIRepository, symbol versions, Meson/package surfaces, and staged runtime checks already forced repeated verifier cycles. |
+| `libarchive` | `04-test` | 294 | 731.3M | 8.3M | 88.9M | 376.8M | 257.2M | 37.3h | 35.0h | Archive-format breadth made the port wide, while CVE metadata, imported-test cleanup, and package verification made closure noisy. |
+| `libbz2` | `04-test` | 157 | 237.0M | 2.3M | 31.5M | 139.4M | 63.7M | 18.1h | 16.8h | The compression surface was small; most difficulty was keeping workflow contracts, release artifacts, and compatibility checks consistent. |
+| `libc6` | `02-setup` | 152 | 704.9M | 6.0M | 425.6M | 273.2M | - | 45.3h | 59.0h | The libc harness dwarfs the current implementation state: per-test environments, relocated container support, and platform assumptions dominated setup. |
+| `libcsv` | `04-test` | 96 | 121.4M | 4.4M | 11.7M | 40.1M | 65.1M | 11.0h | 10.1h | Narrow API and behavior surface kept this smallest run bounded; finish work was mostly upstream parity and packaging sanity. |
+| `libcurl` | `02-setup` | 290 | 1,364.3M | 491.7M | 273.3M | 599.3M | - | 77.9h | 89.8h | Protocol breadth, TLS/session behavior, benchmark expectations, and dependent applications made both recon and early port work expensive. |
+| `libexif` | `04-test` | 840 | 986.7M | 3.1M | 117.4M | 149.9M | 716.3M | 73.8h | 92.7h | Metadata corpus handling was manageable, but release-gate validation produced the most checker sessions and a large test-stage tail. |
+| `libgcrypt` | `03-port` | 313 | 1,420.7M | 514.1M | 54.6M | 236.5M | 615.5M | 77.1h | 90.6h | Crypto API coverage, security expectations, and no-upstream-bridge auditing made closure risky; test-stage work is in progress after the port tag. |
+| `libjansson` | `04-test` | 219 | 330.8M | 2.9M | 38.1M | 231.7M | 58.1M | 28.6h | 69.6h | Moderate JSON API size, but relink checks, object layout, loader success paths, and package behavior made the port stage heavier than setup. |
+| `libjpeg-turbo` | `04-test` | 255 | 804.2M | 2.5M | 91.0M | 406.2M | 304.6M | 72.3h | 57.7h | SIMD boundaries, command-line tools, package contracts, and removal of upstream bridge assumptions dominated implementation and test. |
+| `libjson` | `04-test` | 143 | 328.7M | 2.6M | 50.1M | 109.0M | 167.0M | 23.3h | 21.9h | Static archive layout, Debian/autopkgtest gaps, and installed artifact checks were harder than the small JSON surface itself. |
+| `liblzma` | `04-test` | 120 | 470.7M | 2.7M | 33.5M | 357.6M | 76.9M | 21.2h | 19.1h | Core compression APIs drove the port spend, followed by strict fmt, clippy, test, ABI, and package gates. |
+| `libpng` | `04-test` | 170 | 1,212.5M | 4.2M | 36.3M | 304.9M | 867.0M | 58.2h | 69.2h | Dependent matrix work and C-shim boundaries around longjmp, read phases, and packaging pushed most cost into final verification. |
+| `libsdl` | `04-test` | 257 | 1,245.4M | 3.5M | 209.6M | 719.0M | 313.4M | 56.5h | 46.0h | Input, device, and runtime behavior required broad compatibility scaffolding; dependent applications made validation more complex than the API count suggests. |
+| `libsodium` | `04-test` | 136 | 276.7M | 6.8M | 22.0M | 190.4M | 57.5M | 18.9h | 18.2h | Compact API, but crypto primitive coverage, deterministic fixtures, and security-sensitive compatibility kept the port stage nontrivial. |
+| `libtiff` | `04-test` | 204 | 577.5M | 6.4M | 23.6M | 478.2M | 69.3M | 30.9h | 27.3h | TIFF utilities, package surface, EXIF fixture cleanup, and format-edge behavior concentrated the cost in implementation. |
+| `libuv` | `04-test` | 532 | 1,489.1M | 918.0M | 84.8M | 292.1M | 194.3M | 80.6h | 101.2h | Async fs, network, process, event-loop, and unsafe-boundary semantics drove sustained effort; a late recon tag makes discovery look unusually large. |
+| `libvips` | `04-test` | 186 | 1,111.9M | 2.7M | 62.1M | 659.4M | 387.7M | 45.1h | 42.5h | Large image-processing dependency graph, pipeline behavior, and final dependent/package fixups kept both port and test stages high. |
+| `libwebp` | `04-test` | 154 | 390.8M | 2.9M | 26.9M | 215.8M | 145.1M | 20.9h | 20.4h | Codec, mux, animation, DT_NEEDED, and link-fixture checks were the central compatibility risks. |
+| `libxml` | `04-test` | 463 | 1,757.6M | 6.1M | 749.3M | 884.8M | 117.4M | 85.2h | 75.5h | Broad parser and ABI surface made setup and port enormous; workflow/template gates added repeated validation churn. |
+| `libyaml` | `04-test` | 307 | 376.3M | 1.9M | 34.0M | 187.2M | 153.3M | 34.1h | 37.9h | Parser codegen, artifact-contract consistency, and release checks mattered more than runtime breadth. |
+| `libzstd` | `04-test` | 281 | 1,775.7M | 1.7M | 210.7M | 514.4M | 1,048.9M | 85.0h | 128.5h | Largest current run; CLI/library entry points, dependent-package images, and final release validation dominated the test-stage tail. |
 
 ## Compatibility Contract
 

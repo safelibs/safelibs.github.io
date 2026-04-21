@@ -373,9 +373,20 @@ function renderBlocks(blocks) {
       }
 
       if (block.type === "table") {
+        const numericHeadings = new Set([
+          "Sessions",
+          "Tokens",
+          "Total tokens",
+          "Recon tokens",
+          "Setup tokens",
+          "Port tokens",
+          "Test tokens",
+          "Agent time",
+          "Calendar span"
+        ]);
         const numericColumns = block.header
           .map((heading, index) => ({ heading: stripMarkdown(heading), index }))
-          .filter(({ heading }) => ["Sessions", "Tokens", "Agent time", "Calendar span"].includes(heading))
+          .filter(({ heading }) => numericHeadings.has(heading))
           .map(({ index }) => index);
 
         return `
