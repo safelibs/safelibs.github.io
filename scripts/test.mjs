@@ -31,6 +31,7 @@ const expectations = [
   "<h2>Pipeline</h2>",
   "<h2>Project Structure</h2>",
   "<h2>Port Status</h2>",
+  "<h2>Port Effort Stats</h2>",
   "<h2>Compatibility Contract</h2>",
   "<h2>FAQ</h2>",
   "Generated from <code>contents.md</code>",
@@ -60,7 +61,8 @@ const exactOccurrences = [
   ["Run baseline tests against the original Ubuntu C library package.", 1],
   ["Binary-compatible exported symbols.", 1],
   ["### Verification Philosophy", 0],
-  ["How are the agents harnessed?", 1]
+  ["How are the agents harnessed?", 1],
+  ["Port Effort Stats", 1]
 ];
 
 for (const [snippet, expectedCount] of exactOccurrences) {
@@ -76,7 +78,11 @@ const renderingExpectations = [
   "or the <code>unsafe</code> parts of these libraries",
   "<em>I</em> don&#39;t use these things",
   "<p>A completed SafeLibs port should provide:</p>",
-  "As of April 7, 2026, the SafeLibs org has 23 <code>port-*</code> repositories under active work.",
+  "As of April 21, 2026, the SafeLibs org has 24 library <code>port-*</code> repositories under active work",
+  "The direct library-workspace archive covers 6,343 sessions, 20.09B total tokens, and 1,140.6 agent-hours",
+  "<table class=\"stats-table\">",
+  "<th scope=\"row\"><code>libssl</code></th><td><code>archive-only</code></td>",
+  "<th scope=\"row\"><code>libzstd</code></th><td><code>04-test</code></td><td class=\"numeric\">281</td><td class=\"numeric\">1,775.7M</td>",
   "href=\"https://github.com/safelibs/safelibs.github.io\" target=\"_blank\" rel=\"noreferrer\">https://github.com/safelibs/safelibs.github.io</a>"
 ];
 

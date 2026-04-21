@@ -32,6 +32,7 @@ const pipelineLeadBlocks = pipelineBlocks.filter((block) => block !== pipelineLi
 const pipelineStages = pipelineListBlock ? pipelineListBlock.items : [];
 const projectStructureBlocks = parseBlocks(getSection("Project Structure"));
 const portStatusBlocks = parseBlocks(getSection("Port Status"));
+const effortStatsBlocks = parseBlocks(getSection("Port Effort Stats"));
 const compatibilitySection = getSection("Compatibility Contract");
 const compatibilityLeadText = getSectionLead(compatibilitySection);
 const compatibilityBlocks = parseBlocks(compatibilityLeadText);
@@ -73,6 +74,7 @@ const html = `<!doctype html>
           <a href="#mission">Mission</a>
           <a href="#maintainability">Maintainability</a>
           <a href="#pipeline">Pipeline</a>
+          <a href="#effort">Stats</a>
           <a href="#contract">Contract</a>
           <a href="#faq">FAQ</a>
         </nav>
@@ -163,6 +165,15 @@ const html = `<!doctype html>
           </div>
           <article class="panel prose">
             ${renderBlocks(portStatusBlocks)}
+          </article>
+        </section>
+
+        <section class="section" id="effort" data-reveal>
+          <div class="section-heading">
+            <h2>Port Effort Stats</h2>
+          </div>
+          <article class="panel prose">
+            ${renderBlocks(effortStatsBlocks)}
           </article>
         </section>
 
@@ -289,6 +300,20 @@ function parseBlocks(text) {
       continue;
     }
 
+    if (isTableStart(lines, index)) {
+      const header = parseTableRow(lines[index]);
+      const rows = [];
+      index += 2;
+
+      while (index < lines.length && /^\|/.test(lines[index].trim())) {
+        rows.push(parseTableRow(lines[index]));
+        index += 1;
+      }
+
+      blocks.push({ type: "table", header, rows });
+      continue;
+    }
+
     if (/^- /.test(line)) {
       const items = [];
       while (index < lines.length && /^- /.test(lines[index])) {
@@ -314,6 +339,7 @@ function parseBlocks(text) {
       index < lines.length &&
       lines[index].trim() &&
       !lines[index].startsWith("```") &&
+      !isTableStart(lines, index) &&
       !/^- /.test(lines[index]) &&
       !/^\d+\. /.test(lines[index])
     ) {
@@ -346,9 +372,70 @@ function renderBlocks(blocks) {
         return `<pre class="terminal-block"><code>${escapeHtml(block.content)}</code></pre>`;
       }
 
+      if (block.type === "table") {
+        const numericColumns = block.header
+          .map((heading, index) => ({ heading: stripMarkdown(heading), index }))
+          .filter(({ heading }) => ["Sessions", "Tokens", "Agent time", "Calendar span"].includes(heading))
+          .map(({ index }) => index);
+
+        return `
+          <div class="table-shell">
+            <table class="stats-table">
+              <thead>
+                <tr>
+                  ${block.header.map((cell) => `<th scope="col">${renderInline(cell)}</th>`).join("")}
+                </tr>
+              </thead>
+              <tbody>
+                ${block.rows
+                  .map(
+                    (row) => `
+                      <tr>
+                        ${row
+                          .map((cell, cellIndex) => {
+                            const numericClass = numericColumns.includes(cellIndex) ? ' class="numeric"' : "";
+                            if (cellIndex === 0) {
+                              return `<th scope="row"${numericClass}>${renderInline(cell)}</th>`;
+                            }
+                            return `<td${numericClass}>${renderInline(cell)}</td>`;
+                          })
+                          .join("")}
+                      </tr>
+                    `
+                  )
+                  .join("")}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+
       return "";
     })
     .join("");
+}
+
+function isTableStart(lines, index) {
+  return Boolean(
+    lines[index] &&
+      lines[index + 1] &&
+      /^\|/.test(lines[index].trim()) &&
+      isTableSeparator(lines[index + 1])
+  );
+}
+
+function isTableSeparator(line) {
+  const cells = parseTableRow(line);
+  return cells.length > 1 && cells.every((cell) => /^:?-{3,}:?$/.test(cell));
+}
+
+function parseTableRow(line) {
+  return line
+    .trim()
+    .replace(/^\|/, "")
+    .replace(/\|$/, "")
+    .split("|")
+    .map((cell) => cell.trim());
 }
 
 function renderInline(text) {

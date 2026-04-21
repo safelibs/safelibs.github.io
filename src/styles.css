@@ -56,7 +56,8 @@ code,
 pre,
 .eyebrow,
 .timeline-index,
-.footer-note {
+.footer-note,
+.stats-table {
   font-family: "IBM Plex Mono", monospace;
 }
 
@@ -70,6 +71,7 @@ h3,
 
 code {
   font-size: 0.94em;
+  overflow-wrap: anywhere;
 }
 
 .site-shell {
@@ -263,8 +265,10 @@ code {
 
 .panel p + ul,
 .panel p + ol,
+.panel p + .table-shell,
 .panel ul + p,
 .panel ol + p,
+.table-shell + p,
 .faq-content p + ul,
 .faq-content p + ol,
 .faq-content ul + p,
@@ -355,6 +359,58 @@ code {
   background: rgba(6, 13, 20, 0.92);
   color: #d6e2ef;
   line-height: 1.5;
+}
+
+.table-shell {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid rgba(124, 157, 185, 0.16);
+  border-radius: 1rem;
+  background: rgba(6, 13, 20, 0.44);
+}
+
+.stats-table {
+  width: 100%;
+  min-width: 920px;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+}
+
+.stats-table th,
+.stats-table td {
+  padding: 0.78rem 0.85rem;
+  border-bottom: 1px solid rgba(124, 157, 185, 0.13);
+  color: rgba(230, 237, 246, 0.82);
+  line-height: 1.55;
+  text-align: left;
+  vertical-align: top;
+}
+
+.stats-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: rgba(7, 16, 24, 0.96);
+  color: var(--accent);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.stats-table tbody th {
+  color: var(--teal);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.stats-table tbody tr:last-child th,
+.stats-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.stats-table .numeric {
+  text-align: right;
+  white-space: nowrap;
 }
 
 .faq-list {
