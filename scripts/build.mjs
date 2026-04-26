@@ -33,6 +33,7 @@ const pipelineStages = pipelineListBlock ? pipelineListBlock.items : [];
 const projectStructureBlocks = parseBlocks(getSection("Project Structure"));
 const portStatusBlocks = parseBlocks(getSection("Port Status"));
 const effortStatsBlocks = parseBlocks(getSection("Port Effort Stats"));
+const unsafeStatsBlocks = parseBlocks(getSection("Unsafe Code Distribution"));
 const compatibilitySection = getSection("Compatibility Contract");
 const compatibilityLeadText = getSectionLead(compatibilitySection);
 const compatibilityBlocks = parseBlocks(compatibilityLeadText);
@@ -76,6 +77,7 @@ const html = `<!doctype html>
           <a href="#maintainability">Maintainability</a>
           <a href="#pipeline">Pipeline</a>
           <a href="#effort">Stats</a>
+          <a href="#unsafe">Unsafe</a>
           <a href="#contract">Contract</a>
           <a href="#faq">FAQ</a>
         </nav>
@@ -175,6 +177,15 @@ const html = `<!doctype html>
           </div>
           <article class="panel prose">
             ${renderBlocks(effortStatsBlocks)}
+          </article>
+        </section>
+
+        <section class="section" id="unsafe">
+          <div class="section-heading">
+            <h2>Unsafe Code Distribution</h2>
+          </div>
+          <article class="panel prose">
+            ${renderBlocks(unsafeStatsBlocks)}
           </article>
         </section>
 
@@ -383,7 +394,10 @@ function renderBlocks(blocks) {
           "Port tokens",
           "Test tokens",
           "Agent time",
-          "Calendar span"
+          "Calendar span",
+          "Total unsafe blocks",
+          "C ABI/API blocks",
+          "Other unsafe blocks"
         ]);
         const numericColumns = block.header
           .map((heading, index) => ({ heading: stripMarkdown(heading), index }))

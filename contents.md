@@ -133,6 +133,42 @@ Across those sessions, the stage token split is 2.63B recon, 2.90B setup, 8.50B 
 | `libyaml` | `04-test` | 307 | 376.3M | 1.9M | 34.0M | 187.2M | 153.3M | 34.1h | 37.9h | Parser codegen, artifact-contract consistency, and release checks mattered more than runtime breadth. |
 | `libzstd` | `04-test` | 281 | 1,775.7M | 1.7M | 210.7M | 514.4M | 1,048.9M | 85.0h | 128.5h | Largest current run; CLI/library entry points, dependent-package images, and final release validation dominated the test-stage tail. |
 
+## Unsafe Code Distribution
+
+A port's `unsafe { ... }` blocks fall into two buckets.
+The first is forced by C ABI/API compatibility: the enclosing function takes raw `*const T`/`*mut T` parameters, is `extern "C"`, or is itself an `unsafe fn` exposed across the FFI boundary, so any work it does on those pointers has to live inside an `unsafe` block.
+The second is everything else: blocks whose enclosing function has a fully safe Rust signature, meaning the unsafety was chosen for internal reasons (transmutes, raw allocator handoff, intrinsics, `static mut`, etc.) rather than imposed by the C surface.
+Counts are computed by the textual analyzer in `pipeline/ports/.unsafe-non-abi.py` over the current state of each port's `safe/` tree, with comments and string literals stripped before classification.
+
+Across the 24 active ports there are 17,626 `unsafe { }` blocks: 13,450 (76.3%) for C ABI/API compatibility and 4,176 (23.7%) for other reasons.
+
+| Library | Total unsafe blocks | C ABI/API blocks | Other unsafe blocks |
+| --- | ---: | ---: | ---: |
+| `cjson` | 5 | 5 | 0 |
+| `giflib` | 522 | 510 | 12 |
+| `glib` | 38 | 28 | 10 |
+| `libarchive` | 574 | 348 | 226 |
+| `libbz2` | 83 | 3 | 80 |
+| `libc6` | 9 | 4 | 5 |
+| `libcsv` | 116 | 81 | 35 |
+| `libcurl` | 443 | 314 | 129 |
+| `libexif` | 1,205 | 1,165 | 40 |
+| `libgcrypt` | 2,976 | 1,147 | 1,829 |
+| `libjansson` | 805 | 790 | 15 |
+| `libjpeg-turbo` | 79 | 1 | 78 |
+| `libjson` | 104 | 93 | 11 |
+| `liblzma` | 296 | 24 | 272 |
+| `libpng` | 722 | 644 | 78 |
+| `libsdl` | 478 | 66 | 412 |
+| `libsodium` | 532 | 497 | 35 |
+| `libtiff` | 333 | 327 | 6 |
+| `libuv` | 3,410 | 3,024 | 386 |
+| `libvips` | 2,833 | 2,604 | 229 |
+| `libwebp` | 194 | 133 | 61 |
+| `libxml` | 1,560 | 1,425 | 135 |
+| `libyaml` | 126 | 64 | 62 |
+| `libzstd` | 183 | 153 | 30 |
+
 ## Compatibility Contract
 
 A completed SafeLibs port should provide:
