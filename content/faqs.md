@@ -52,7 +52,7 @@ The current focus is Ubuntu drop-in replacements via apt, which forces strict AB
 
 ### Can we go beyond libraries?
 
-Definitely a future focus, but libraries have a structural advantage that applications don't: every application that uses a library implicitly exercises it, so we get a wide pool of validation effectively for free — each downstream consumer is another test case the port has to survive. An application port has no equivalent. There's no consumer base to lean on, so we'd need a lot of extra test cases written specifically for it, and there's no obvious way to generate those at the scale this pipeline needs.
+Definitely a future focus, but libraries have a structural advantage that applications don't: every application that uses a library implicitly exercises it, so we get a wide pool of validation effectively for free — each downstream consumer is another test case the port has to survive. An application port has no equivalent. There's no consumer base to lean on, so we'd need a lot of extra test cases written specifically for it.
 
 ### How do I report a port bug?
 
