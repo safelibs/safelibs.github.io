@@ -80,8 +80,8 @@ const html = `<!doctype html>
         </a>
         <nav class="top-nav" aria-label="Section navigation">
           <a href="#what">What is this?</a>
-          <a href="#pipeline">The Pipeline</a>
           <a href="#ports">The Ports</a>
+          <a href="#pipeline">The Pipeline</a>
           <a href="#other-efforts">Other efforts</a>
           <a href="#faq">FAQ</a>
         </nav>
@@ -120,30 +120,6 @@ const html = `<!doctype html>
           </article>
         </section>
 
-        <section class="section" id="pipeline">
-          <div class="section-heading">
-            <h2>The Pipeline</h2>
-          </div>
-          <article class="panel">
-            ${renderBlocks(pipelineLeadBlocks)}
-          </article>
-          <div class="timeline">
-            ${pipelineStages
-              .map(
-                (stage, index) => `
-                  <article class="pipeline-stage">
-                    <span class="timeline-index">${String(index + 1).padStart(2, "0")}</span>
-                    <div>
-                      <h3>${escapeHtml(stageTitle(stage))}</h3>
-                      <p>${renderInline(stageDescription(stage))}</p>
-                    </div>
-                  </article>
-                `
-              )
-              .join("")}
-          </div>
-        </section>
-
         <section class="section" id="ports">
           <div class="section-heading">
             <h2>The Ports</h2>
@@ -176,6 +152,30 @@ const html = `<!doctype html>
               ${renderBlocks(portsNotesBlocks)}
             </div>
           </details>
+        </section>
+
+        <section class="section" id="pipeline">
+          <div class="section-heading">
+            <h2>The Pipeline</h2>
+          </div>
+          <article class="panel">
+            ${renderBlocks(pipelineLeadBlocks)}
+          </article>
+          <div class="timeline">
+            ${pipelineStages
+              .map(
+                (stage, index) => `
+                  <article class="pipeline-stage">
+                    <span class="timeline-index">${String(index + 1).padStart(2, "0")}</span>
+                    <div>
+                      <h3>${escapeHtml(stageTitle(stage))}</h3>
+                      <p>${renderInline(stageDescription(stage))}</p>
+                    </div>
+                  </article>
+                `
+              )
+              .join("")}
+          </div>
         </section>
 
         <section class="section" id="other-efforts">
