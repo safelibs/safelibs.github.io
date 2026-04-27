@@ -1,9 +1,9 @@
-SafeLibs maintains Rust reimplementations of widely-used C/C++ libraries. Each port ships as a `.deb` that's binary-compatible with the original Ubuntu library package — already-built consumer binaries pick up the replacement at runtime, no relink (let alone recompile) required.
+SafeLibs maintains Rust reimplementations of widely-used C/C++ libraries. Each port ships as a `.deb` that's binary-compatible with the original Ubuntu library package — same `.so`, same symbols, same calling conventions, so nothing downstream has to be rebuilt or relinked.
 
 ### Scope
 
 - Rewrite widely-used C/C++ libraries in Rust for memory safety.
-- Hold the original C ABI so already-built binaries pick up the replacement at runtime, no relink required.
+- Hold the original C ABI exactly so nothing downstream has to change.
 - Match the upstream library's performance — not a soft-fork approximation of it.
 
 ### Priorities, in order
