@@ -140,7 +140,7 @@ const html = `<!doctype html>
             <ul class="in-progress-list">${statsTokens.in_progress
               .map(
                 (entry) =>
-                  `<li><code>${escapeHtml(entry.name)}</code><span class="stage-badge stage-${escapeAttribute(entry.stage)}">${escapeHtml(entry.stage)}</span></li>`
+                  `<li><a class="port-link" href="https://github.com/safelibs/port-${escapeAttribute(entry.name)}" target="_blank" rel="noreferrer"><code>${escapeHtml(entry.name)}</code></a><span class="stage-badge stage-${escapeAttribute(entry.stage)}">${escapeHtml(entry.stage)}</span></li>`
               )
               .join("")}</ul>
           </div>`
@@ -405,7 +405,11 @@ function renderBlocks(blocks) {
                           .map((cell, cellIndex) => {
                             const numericClass = numericColumns.includes(cellIndex) ? ' class="numeric"' : "";
                             if (cellIndex === 0) {
-                              return `<th scope="row"${numericClass}>${renderInline(cell)}</th>`;
+                              const libName = stripMarkdown(cell);
+                              const linked = libName
+                                ? `<a class="port-link" href="https://github.com/safelibs/port-${escapeAttribute(libName)}" target="_blank" rel="noreferrer">${renderInline(cell)}</a>`
+                                : renderInline(cell);
+                              return `<th scope="row"${numericClass}>${linked}</th>`;
                             }
                             return `<td${numericClass}>${renderInline(cell)}</td>`;
                           })

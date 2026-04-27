@@ -105,7 +105,7 @@ const renderingExpectations = [
   "href=\"https://www.darpa.mil/research/programs/translating-all-c-to-rust\" target=\"_blank\" rel=\"noreferrer\">TRACTOR program</a>",
   "<table class=\"stats-table\">",
   "<th scope=\"col\" class=\"numeric\">Recon tokens</th>",
-  "<th scope=\"row\"><code>libzstd</code></th><td><code>04-test</code></td><td class=\"numeric\">281</td><td class=\"numeric\">1,775.7M</td><td class=\"numeric\">1.7M</td><td class=\"numeric\">210.7M</td><td class=\"numeric\">514.4M</td><td class=\"numeric\">1,048.9M</td>",
+  "<th scope=\"row\"><a class=\"port-link\" href=\"https://github.com/safelibs/port-libzstd\" target=\"_blank\" rel=\"noreferrer\"><code>libzstd</code></a></th><td><code>04-test</code></td><td class=\"numeric\">281</td><td class=\"numeric\">1,775.7M</td><td class=\"numeric\">1.7M</td><td class=\"numeric\">210.7M</td><td class=\"numeric\">514.4M</td><td class=\"numeric\">1,048.9M</td>",
   "href=\"https://github.com/safelibs\" target=\"_blank\" rel=\"noreferrer\">github.com/safelibs</a>",
   "<details class=\"notes-block\">",
   "<span class=\"big-number\">17</span>"

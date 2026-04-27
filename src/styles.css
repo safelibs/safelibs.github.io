@@ -532,6 +532,20 @@ code {
   color: var(--text);
 }
 
+.port-link {
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(124, 157, 185, 0.45);
+}
+
+.port-link:hover,
+.port-link:focus-visible {
+  border-bottom-color: var(--accent);
+}
+
+.port-link code {
+  color: inherit;
+}
+
 .stage-badge {
   display: inline-flex;
   align-items: center;
