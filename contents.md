@@ -104,6 +104,10 @@ The current focus is Ubuntu drop-in replacements via apt, which forces strict AB
 
 We can't accept code patches against the ported libraries — we don't audit the generated Rust closely enough to reason about adversarial PRs. We _do_ accept reproducer testcases against the [validator repo](https://github.com/safelibs/validator) — the Test stage picks those up and re-runs the affected port until it passes.
 
+### What's the license on a port?
+
+IANAL, but: almost certainly the original library's license. A port is a derivative work — the C source shapes the Rust translation, and the test suite is lifted (and adapted) directly from upstream. Treat each port as carrying the upstream license until somebody who actually is a lawyer says otherwise.
+
 ## Ports
 
 Across the {{validating_count}} validating ports so far: **{{total_sessions}} sessions, {{total_tokens_b}}B tokens, {{total_agent_hours}} agent-hours**, split {{recon_tokens_b}}B recon, {{setup_tokens_b}}B setup, {{port_tokens_b}}B port, {{test_tokens_b}}B test.
