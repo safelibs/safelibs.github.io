@@ -33,7 +33,7 @@ const expectations = [
   "<title>SafeLibs | Memory-safe drop-in replacements</title>",
   "<h2>What is this?</h2>",
   "<h2>How's it done?</h2>",
-  "<h2>What's Ported?</h2>",
+  "<h2>What's ported?</h2>",
   "<h2>Other efforts</h2>",
   "<h2>Other FAQs</h2>",
   "<link rel=\"icon\" href=\"data:image/svg+xml,",
@@ -81,7 +81,7 @@ const exactOccurrences = [
   ["Run baseline tests against the original Ubuntu C library package.", 1],
   ["Binary-compatible exported symbols.", 1],
   ["How are the agents harnessed?", 0],
-  ["<h2>What's Ported?</h2>", 1],
+  ["<h2>What's ported?</h2>", 1],
   ["<h2>How's it done?</h2>", 1],
   ["<h2>What is this?</h2>", 1]
 ];

@@ -119,7 +119,7 @@ Ideally the agents wrap it in a C ABI compatibility layer rather than redoing th
 
 IANAL, but: almost certainly the original library's license. A port is a derivative work — the C source shapes the Rust translation, and the test suite is lifted (and adapted) directly from upstream. I treat each port as carrying the upstream license until somebody who actually is a lawyer says otherwise.
 
-## What's Ported?
+## What's ported?
 
 Across the {{validating_count}} validating ports so far: **{{total_sessions}} sessions, {{total_tokens_b}}B tokens, {{total_agent_hours}} agent-hours**, split {{recon_tokens_b}}B recon, {{setup_tokens_b}}B setup, {{port_tokens_b}}B port, {{test_tokens_b}}B test.
 
