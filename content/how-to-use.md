@@ -1,3 +1,3 @@
-- **apt** — add [safelibs.org/apt](https://safelibs.org/apt) and `apt install` a `port-*` package. Existing binaries pick up the replacement at the next dynamic link.
+- **apt** — add [safelibs.org/apt](https://safelibs.org/apt) as a higher-priority source and `apt upgrade`. The SafeLibs builds ship under the same package names as the upstream Ubuntu libraries, so they replace the originals in place.
 - **Docker** — pre-built images with the SafeLibs ports already swapped in at [hub.docker.com/r/safelibs](https://hub.docker.com/r/safelibs).
 - **Validator** — see [safelibs.org/validator](https://safelibs.org/validator) to check what tests are used to validate these ports.
