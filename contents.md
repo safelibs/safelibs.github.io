@@ -40,8 +40,6 @@ Each port runs through the same swap test:
 - Install SafeLibs-generated `.deb` replacements.
 - Re-run the exact same tests and consumer checks.
 
-If a port still forwards to the original C implementation, the replacement stage fails after purge.
-
 ## FAQ
 
 ### Why Rust instead of some other memory-safe language?
