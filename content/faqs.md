@@ -50,6 +50,10 @@ Each port is a regenerable artifact — the workflow can be rerun from scratch a
 
 The current focus is Ubuntu drop-in replacements via apt, which forces strict ABI compatibility and shapes a sizable chunk of the unsafe-block count. Distributions with stricter, content-addressed semantics (like Nix) would be a better fit for agent-generated replacements; if you're interested in extending coverage there, get in touch.
 
+### Can we go beyond libraries?
+
+Definitely a future focus, but libraries have a structural advantage that applications don't: every application that uses a library implicitly exercises it, so we get a wide pool of validation effectively for free — each downstream consumer is another test case the port has to survive. An application port has no equivalent. There's no consumer base to lean on, so we'd need a lot of extra test cases written specifically for it, and there's no obvious way to generate those at the scale this pipeline needs.
+
 ### How do I report a port bug?
 
 We can't accept code patches against the ported libraries — we don't audit the generated Rust closely enough to reason about adversarial PRs. We _do_ accept reproducer testcases against the [validator repo](https://github.com/safelibs/validator) — the Test stage picks those up and re-runs the affected port until it passes.
