@@ -148,35 +148,34 @@ const html = `<!doctype html>
           <div class="section-heading">
             <h2>Ports</h2>
           </div>
-          <div class="ports-headline">
-            <p class="ports-headline-line">
-              <span class="big-number">${escapeHtml(statsTokens.validating_count)}</span>
-              libraries passing <a href="https://safelibs.org/validator" target="_blank" rel="noreferrer">validation</a>${
-                statsTokens.in_progress.length
-                  ? `, plus <span class="big-number small">${statsTokens.in_progress.length}</span> in progress`
-                  : ""
-              }.
-            </p>
-            ${
-              statsTokens.in_progress.length
-                ? `<ul class="in-progress-list">${statsTokens.in_progress
-                    .map(
-                      (entry) =>
-                        `<li><code>${escapeHtml(entry.name)}</code><span class="stage-badge stage-${escapeAttribute(entry.stage)}">${escapeHtml(entry.stage)}</span></li>`
-                    )
-                    .join("")}</ul>`
-                : ""
-            }
-          </div>
+          <p class="ports-headline-line">
+            <span class="big-number">${escapeHtml(statsTokens.validating_count)}</span>
+            libraries passing <a href="https://safelibs.org/validator" target="_blank" rel="noreferrer">validation</a>.
+          </p>
           <div class="ports-article">
             ${renderBlocks(portsLeadBlocks)}
-            <details class="notes-block">
-              <summary>How to read this table</summary>
-              <div class="notes-content">
-                ${renderBlocks(portsNotesBlocks)}
-              </div>
-            </details>
           </div>
+          ${
+            statsTokens.in_progress.length
+              ? `<div class="in-progress-section">
+            <p class="in-progress-line">
+              <span class="big-number small">${statsTokens.in_progress.length}</span> more still in progress:
+            </p>
+            <ul class="in-progress-list">${statsTokens.in_progress
+              .map(
+                (entry) =>
+                  `<li><code>${escapeHtml(entry.name)}</code><span class="stage-badge stage-${escapeAttribute(entry.stage)}">${escapeHtml(entry.stage)}</span></li>`
+              )
+              .join("")}</ul>
+          </div>`
+              : ""
+          }
+          <details class="notes-block">
+            <summary>How to read this table</summary>
+            <div class="notes-content">
+              ${renderBlocks(portsNotesBlocks)}
+            </div>
+          </details>
         </section>
 
         <section class="section" id="other-efforts">
