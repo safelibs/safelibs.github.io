@@ -15,7 +15,7 @@ const validatorFixturePath = process.env.SAFELIBS_VALIDATOR_FIXTURE;
 
 const validatorSiteData = await loadValidatorSiteData(validatorUrl, validatorFixturePath);
 const validatingLibraries = extractValidatingLibraries(validatorSiteData, validatorMode);
-const markdown = applyValidatorFilter(rawMarkdown, validatingLibraries);
+const { text: markdown, tokens: statsTokens } = applyValidatorFilter(rawMarkdown, validatingLibraries);
 
 await rm(distDir, { force: true, recursive: true });
 await mkdir(distDir, { recursive: true });
@@ -41,7 +41,9 @@ const pipelineLeadBlocks = pipelineBlocks.filter((block) => block !== pipelineLi
 const pipelineStages = pipelineListBlock ? pipelineListBlock.items : [];
 const projectStructureBlocks = parseBlocks(getSection("Project Structure"));
 const portStatusBlocks = parseBlocks(getSection("Port Status"));
-const effortStatsBlocks = parseBlocks(getSection("Port Effort Stats"));
+const effortStatsSection = getSection("Port Effort Stats");
+const effortStatsLeadBlocks = parseBlocks(getSectionLead(effortStatsSection));
+const effortStatsNotesBlocks = parseBlocks(getSubsection(effortStatsSection, "Notes"));
 const otherEffortsBlocks = parseBlocks(getSection("Other Efforts"));
 const compatibilitySection = getSection("Compatibility Contract");
 const compatibilityLeadText = getSectionLead(compatibilitySection);
@@ -167,9 +169,15 @@ const html = `<!doctype html>
           <div class="section-heading">
             <h2>Port Status</h2>
           </div>
-          <article class="panel prose">
-            ${renderBlocks(portStatusBlocks)}
-          </article>
+          <div class="status-grid">
+            <article class="panel stat-card">
+              <span class="stat-number">${escapeHtml(statsTokens.validating_count)}</span>
+              <span class="stat-label">libraries passing <code>port-04-test</code></span>
+            </article>
+            <article class="panel prose">
+              ${renderBlocks(portStatusBlocks)}
+            </article>
+          </div>
         </section>
 
         <section class="section" id="effort">
@@ -177,8 +185,14 @@ const html = `<!doctype html>
             <h2>Port Effort Stats</h2>
           </div>
           <article class="panel prose">
-            ${renderBlocks(effortStatsBlocks)}
+            ${renderBlocks(effortStatsLeadBlocks)}
           </article>
+          <details class="notes-block">
+            <summary>How to read this table</summary>
+            <div class="notes-content">
+              ${renderBlocks(effortStatsNotesBlocks)}
+            </div>
+          </details>
         </section>
 
         <section class="section" id="other-efforts">
@@ -687,7 +701,7 @@ function applyValidatorFilter(text, validating) {
     }
     throw new Error(`Unknown placeholder ${match} in contents.md`);
   });
-  return finalText;
+  return { text: finalText, tokens };
 }
 
 function isTableSeparatorLine(line) {

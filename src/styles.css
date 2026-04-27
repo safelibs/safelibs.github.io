@@ -394,6 +394,98 @@ code {
   white-space: nowrap;
 }
 
+.status-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 2fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 1.6rem 1.4rem;
+}
+
+.stat-number {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(3.8rem, 8vw, 5.6rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  color: var(--teal);
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.stat-label code {
+  color: var(--text);
+  background: rgba(81, 212, 185, 0.1);
+  padding: 0.05em 0.4em;
+  border-radius: 0.35em;
+}
+
+.notes-block {
+  margin-top: 1rem;
+  border: 1px solid var(--stroke);
+  border-radius: 1rem;
+  background: rgba(7, 16, 24, 0.55);
+  overflow: hidden;
+}
+
+.notes-block > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  cursor: pointer;
+  padding: 0.95rem 1.25rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.notes-block > summary::-webkit-details-marker {
+  display: none;
+}
+
+.notes-block > summary::after {
+  content: "+";
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+.notes-block[open] > summary::after {
+  content: "−";
+}
+
+.notes-block[open] > summary {
+  color: var(--text);
+  border-bottom: 1px solid var(--stroke);
+}
+
+.notes-content {
+  padding: 1.05rem 1.25rem 1.15rem;
+  color: rgba(230, 237, 246, 0.78);
+  font-size: 0.95rem;
+}
+
+.notes-content p {
+  margin: 0;
+  line-height: 1.65;
+}
+
+.notes-content p + p {
+  margin-top: 0.9rem;
+}
+
 .faq-list {
   display: grid;
   gap: 0.9rem;
@@ -439,7 +531,8 @@ code {
     align-items: flex-start;
   }
 
-  .split-grid {
+  .split-grid,
+  .status-grid {
     grid-template-columns: 1fr;
   }
 }

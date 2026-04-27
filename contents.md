@@ -87,27 +87,15 @@ We can't accept code patches against the ported libraries — we don't audit the
 ## Project Structure
 
 - Each target library lives in its own `port-LIBNAME` repo under https://github.com/safelibs
-- The pipeline lives at https://github.com/safelibs/pipeline
-- This site lives at https://github.com/safelibs/safelibs.github.io
+- The pipeline that drives every port lives at https://github.com/safelibs/pipeline
 
 ## Port Status
 
-As of April 21, 2026, the SafeLibs org has {{validating_count}} library `port-*` repositories that currently pass the validator proof at `port-04-test`, plus the shared `port-template` repository.
-
-The repos are still private, so this page intentionally isn't pretending to be a live public scoreboard. Once the verification artifacts are ready to expose, this section will show real compatibility results in place of the count.
+As of April 21, 2026, the SafeLibs org has {{validating_count}} library `port-*` repositories that currently pass the validator proof at `port-04-test`. Per-port detail will land here once the source repos are public.
 
 ## Port Effort Stats
 
-Per-library token spend, agent time, and unsafe-block counts across the {{validating_count}} validating `port-*` repos.
-The validator at https://safelibs.github.io/validator/site-data.json drives this list, and rows are filtered at site-build time so the table follows live validator results.
-In total: **{{total_sessions}} sessions, {{total_tokens_b}}B tokens, {{total_agent_hours}} agent-hours** from March 27 to April 11, 2026 UTC, with a stage-token split of {{recon_tokens_b}}B recon, {{setup_tokens_b}}B setup, {{port_tokens_b}}B port, {{test_tokens_b}}B test.
-
-Stage columns follow each repo's `01-recon`/`02-setup`/`03-port`/`04-test` tags; sessions past the last completed tag count toward the next in-progress stage, which is why ports still in earlier stages show partial column coverage.
-Agent time is the sum of per-session wall time, so parallel sessions add up as parallel agent-hours.
-
-The unsafe columns split each port's `unsafe { ... }` blocks two ways: **ABI unsafe** is forced by the C surface (functions taking `*const T`/`*mut T`, `extern "C"` functions, or `unsafe fn` exposed across the FFI boundary), and **Other unsafe** is everything else — transmutes, raw allocator handoff, intrinsics, `static mut`, etc.
-Across all {{validating_count}} validating ports: **{{total_unsafe}}** blocks total, {{abi_unsafe}} ({{abi_unsafe_pct}}%) ABI and {{other_unsafe}} ({{other_unsafe_pct}}%) other.
-The ABI share is largely a tax for staying drop-in compatible with existing C consumers; relaxing that constraint (e.g. for a Rust-only consumer story or a non-ABI-stable distro target) would let a future pipeline drop a large fraction of those blocks.
+Across {{validating_count}} validating `port-*` repos between March 27 and April 11, 2026 UTC: **{{total_sessions}} sessions, {{total_tokens_b}}B tokens, {{total_agent_hours}} agent-hours**, with a stage-token split of {{recon_tokens_b}}B recon, {{setup_tokens_b}}B setup, {{port_tokens_b}}B port, {{test_tokens_b}}B test.
 
 | Library | Completed stage | Sessions | Total tokens | Recon tokens | Setup tokens | Port tokens | Test tokens | Agent time | Calendar span | Total unsafe | ABI unsafe | Other unsafe |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -135,6 +123,14 @@ The ABI share is largely a tax for staying drop-in compatible with existing C co
 | `libxml` | `04-test` | 463 | 1,757.6M | 6.1M | 749.3M | 884.8M | 117.4M | 85.2h | 75.5h | 1,560 | 1,425 | 135 |
 | `libyaml` | `04-test` | 307 | 376.3M | 1.9M | 34.0M | 187.2M | 153.3M | 34.1h | 37.9h | 126 | 64 | 62 |
 | `libzstd` | `04-test` | 281 | 1,775.7M | 1.7M | 210.7M | 514.4M | 1,048.9M | 85.0h | 128.5h | 183 | 153 | 30 |
+
+**{{total_unsafe}}** `unsafe { ... }` blocks across the validating ports — {{abi_unsafe}} ({{abi_unsafe_pct}}%) forced by the C ABI, {{other_unsafe}} ({{other_unsafe_pct}}%) other.
+
+### Notes
+
+Stage columns track each repo's `01-recon`/`02-setup`/`03-port`/`04-test` tags. Sessions past the last completed tag count toward the next in-progress stage, so ports in earlier stages show partial column coverage. Agent time sums per-session wall clock, so parallel sessions stack as parallel agent-hours.
+
+**ABI unsafe** is forced by the C surface — functions taking `*const T`/`*mut T`, `extern "C"` functions, or `unsafe fn` exposed across the FFI boundary. **Other unsafe** is everything else: transmutes, raw allocator handoff, intrinsics, `static mut`. The ABI share is the cost of drop-in compatibility; a Rust-only consumer story, or a non-ABI-stable distro target like Nix, would let a future pipeline drop a large fraction of those blocks.
 
 ## Other Efforts
 
