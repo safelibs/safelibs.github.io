@@ -38,6 +38,7 @@ const pipelineStages = pipelineListBlock ? pipelineListBlock.items : [];
 const portsSection = getSection("Ports");
 const portsLeadBlocks = parseBlocks(getSectionLead(portsSection));
 const portsNotesBlocks = parseBlocks(getSubsection(portsSection, "Notes"));
+const responsibleBlocks = parseBlocks(getSection("Who is responsible for this?"));
 const otherEffortsBlocks = parseBlocks(getSection("Other Efforts"));
 const metaDescription = truncate(stripMarkdown(intro), 180);
 
@@ -76,6 +77,7 @@ const html = `<!doctype html>
           <a href="#what">What is this?</a>
           <a href="#ports">The Ports</a>
           <a href="#pipeline">The Pipeline</a>
+          <a href="#responsible">Who?</a>
           <a href="#other-efforts">Other efforts</a>
           <a href="#faq">Other FAQs</a>
         </nav>
@@ -170,6 +172,15 @@ const html = `<!doctype html>
               )
               .join("")}
           </div>
+        </section>
+
+        <section class="section" id="responsible">
+          <div class="section-heading">
+            <h2>Who is responsible for this?</h2>
+          </div>
+          <article class="panel prose">
+            ${renderBlocks(responsibleBlocks)}
+          </article>
         </section>
 
         <section class="section" id="other-efforts">

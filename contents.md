@@ -158,6 +158,12 @@ Stage columns track each repo's `01-recon`/`02-setup`/`03-port`/`04-test` tags. 
 
 **ABI unsafe** is forced by the C surface — functions taking `*const T`/`*mut T`, `extern "C"` functions, or `unsafe fn` exposed across the FFI boundary. **Other unsafe** is everything else: transmutes, raw allocator handoff, intrinsics, `static mut`. The ABI share is the cost of drop-in compatibility; a Rust-only consumer story, or a non-ABI-stable distro target like Nix, would let a future pipeline drop a large fraction of those blocks.
 
+## Who is responsible for this?
+
+- [Yan Shoshitaishvili](https://yancomm.net) — [yans@asu.edu](mailto:yans@asu.edu)
+- ASU's [SEFCOM Lab](https://sefcom.asu.edu)
+- ASU's [CTF Center](https://ctf.asu.edu)
+
 ## Other Efforts
 
 - DARPA's [TRACTOR program](https://www.darpa.mil/research/programs/translating-all-c-to-rust) (Translating All C To Rust) is the broader DoD-funded push behind agentic C-to-Rust translation, and a conceptual ancestor of work like this.
