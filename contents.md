@@ -40,7 +40,7 @@ Each port runs through the same swap test:
 - Install SafeLibs-generated `.deb` replacements.
 - Re-run the exact same tests and consumer checks.
 
-## FAQ
+## Other FAQs
 
 ### Why Rust instead of some other memory-safe language?
 
@@ -78,9 +78,13 @@ If your agent's sandbox is off, you have already made the leap!
 
 Two real bottlenecks right now: humanpower and tokens.
 
-**Humanpower.** Scaling agentic ports is tricky from a security standpoint — supply-chain attacks are exactly the kind of thing that gets worse as you grow. If you and I trust each other and you're interested in pitching in, get in touch. If you're in a position to fund this kind of work, sponsoring my lab is the most direct way to keep it going.
+**Humanpower.** Scaling agentic ports is tricky from a security standpoint — supply-chain attacks are exactly the kind of thing that gets worse as you grow. If you and I trust each other and you're interested in pitching in, get in touch. If you're in a position to fund this kind of work, sponsoring [our research center](https://ctf.asu.edu) is the most direct way to keep it going.
 
-**AI compute.** ASU's infinite-Codex experiment is over and there's no great replacement queued up. If you can throw tokens our way, that's huge. One obvious next move is using more agents to audit the agent-generated code, and it'd be especially cool to see what a next-generation frontier model could do here — if a frontier lab wants to collaborate, looking at you @anthropic, @openai, @google.
+**AI compute.** Much of this work was done during a brief experiment where Arizona State University gave every employee **infinite** codex usage. ASU's infinite-Codex experiment is over and there's no great replacement queued up. If you can throw tokens our way, that's huge.
+
+**Beyond-frontier models.** One obvious next move is using more agents to audit the agent-generated code, and it'd be especially cool to see what a next-generation frontier model could do here — if a frontier lab wants to collaborate on this, let us know!
+
+[Email me](mailto:yans@asu.edu) for more info!
 
 ### How are the agents harnessed?
 
