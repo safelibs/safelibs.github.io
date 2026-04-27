@@ -32,6 +32,7 @@ const ports = await loadPorts(validating);
 
 const introHtml = renderMarkdown(await readContent("intro.md"));
 const whatsThisHtml = renderMarkdown(await readContent("whats-this.md"));
+const howToUseHtml = renderMarkdown(await readContent("how-to-use.md"));
 const pipeline = parsePipeline(await readContent("pipeline.md"));
 const portsNotesHtml = renderMarkdown(await readContent("ports-notes.md"));
 const faqEntries = parseFaqs(await readContent("faqs.md"));
@@ -57,6 +58,7 @@ const tokens = {
 const html = renderPage({
   introHtml,
   whatsThisHtml,
+  howToUseHtml,
   pipeline,
   portsNotesHtml,
   faqEntries: faqEntries.map((entry) => ({
@@ -266,6 +268,7 @@ function parsePipeline(text) {
 function renderPage({
   introHtml,
   whatsThisHtml,
+  howToUseHtml,
   pipeline,
   portsNotesHtml,
   faqEntries,
@@ -303,6 +306,7 @@ function renderPage({
       <main class="site-main">
         ${renderHero(introHtml)}
         ${renderSection("what", "What's this?", `<article class="what-article">${whatsThisHtml}</article>`)}
+        ${renderSection("use", "How do I use this?", `<article class="panel prose">${howToUseHtml}</article>`)}
         ${renderPortsSection(ports, portsNotesHtml, tokens)}
         ${renderPipelineSection(pipeline)}
         ${renderSection("responsible", "Who's responsible?", `<article class="panel prose">${responsibleHtml}</article>`)}
@@ -329,6 +333,7 @@ function renderHeader() {
         </a>
         <nav class="top-nav" aria-label="Section navigation">
           <a href="#what">What's this?</a>
+          <a href="#use">How do I use this?</a>
           <a href="#ports">What's ported?</a>
           <a href="#pipeline">How's it done?</a>
           <a href="#responsible">Who's responsible?</a>
