@@ -11,7 +11,7 @@
   --accent-strong: #ff8b3d;
   --teal: #51d4b9;
   --shadow: 0 24px 64px rgba(2, 7, 12, 0.36);
-  --max-width: 1040px;
+  --max-width: 1340px;
   color-scheme: dark;
 }
 
@@ -373,17 +373,16 @@ code {
 
 .stats-table {
   width: 100%;
-  min-width: 920px;
   border-collapse: collapse;
-  font-size: 0.84rem;
+  font-size: 0.82rem;
 }
 
 .stats-table th,
 .stats-table td {
-  padding: 0.78rem 0.85rem;
+  padding: 0.6rem 0.55rem;
   border-bottom: 1px solid rgba(124, 157, 185, 0.13);
   color: rgba(230, 237, 246, 0.82);
-  line-height: 1.55;
+  line-height: 1.45;
   text-align: left;
   vertical-align: top;
 }
