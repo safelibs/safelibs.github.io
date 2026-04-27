@@ -23,7 +23,7 @@ await mkdir(distDir, { recursive: true });
 const title = matchRequired(markdown, /^# (.+)$/m, "site title")[1].trim();
 const intro = matchRequired(markdown, /^# .+\n\n([\s\S]*?)\n\n## /m, "intro copy")[1].trim();
 const introBlocks = parseBlocks(intro);
-const whatSection = getSection("What is this?");
+const whatSection = getSection("What's this?");
 const whatLeadBlocks = parseBlocks(getSectionLead(whatSection));
 const scopeItems = extractListItems(getSubsection(whatSection, "Scope"), "Scope");
 const prioritiesBlocks = parseBlocks(getSubsection(whatSection, "Priorities, in order"));
@@ -38,7 +38,7 @@ const pipelineStages = pipelineListBlock ? pipelineListBlock.items : [];
 const portsSection = getSection("What's ported?");
 const portsLeadBlocks = parseBlocks(getSectionLead(portsSection));
 const portsNotesBlocks = parseBlocks(getSubsection(portsSection, "Notes"));
-const responsibleBlocks = parseBlocks(getSection("Who is responsible for this?"));
+const responsibleBlocks = parseBlocks(getSection("Who's responsible for this?"));
 const otherEffortsBlocks = parseBlocks(getSection("Other Efforts"));
 const metaDescription = truncate(stripMarkdown(intro), 180);
 
@@ -74,10 +74,10 @@ const html = `<!doctype html>
           </span>
         </a>
         <nav class="top-nav" aria-label="Section navigation">
-          <a href="#what">What is this?</a>
+          <a href="#what">What's this?</a>
           <a href="#ports">What's ported?</a>
           <a href="#pipeline">How's it done?</a>
-          <a href="#responsible">Who is responsible for this?</a>
+          <a href="#responsible">Who's responsible for this?</a>
           <a href="#other-efforts">Other efforts</a>
           <a href="#faq">Other FAQs</a>
         </nav>
@@ -93,7 +93,7 @@ const html = `<!doctype html>
 
         <section class="section" id="what">
           <div class="section-heading">
-            <h2>What is this?</h2>
+            <h2>What's this?</h2>
           </div>
           <article class="what-article">
             <div class="lead">${renderBlocks(whatLeadBlocks)}</div>
@@ -172,7 +172,7 @@ const html = `<!doctype html>
 
         <section class="section" id="responsible">
           <div class="section-heading">
-            <h2>Who is responsible for this?</h2>
+            <h2>Who's responsible for this?</h2>
           </div>
           <article class="panel prose">
             ${renderBlocks(responsibleBlocks)}

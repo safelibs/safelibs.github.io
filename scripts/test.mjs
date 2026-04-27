@@ -31,7 +31,7 @@ const html = await readFile(join(rootDir, "dist", "index.html"), "utf8");
 
 const expectations = [
   "<title>SafeLibs | Memory-safe drop-in replacements</title>",
-  "<h2>What is this?</h2>",
+  "<h2>What's this?</h2>",
   "<h2>How's it done?</h2>",
   "<h2>What's ported?</h2>",
   "<h2>Other efforts</h2>",
@@ -83,7 +83,7 @@ const exactOccurrences = [
   ["How are the agents harnessed?", 0],
   ["<h2>What's ported?</h2>", 1],
   ["<h2>How's it done?</h2>", 1],
-  ["<h2>What is this?</h2>", 1]
+  ["<h2>What's this?</h2>", 1]
 ];
 
 for (const [snippet, expectedCount] of exactOccurrences) {

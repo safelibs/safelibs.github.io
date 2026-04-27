@@ -2,7 +2,7 @@
 
 SafeLibs builds memory-safe (Rust) reimplementations of critical load-bearing C/C++ libraries used throughout open source infrastructure, while attempting to preserve drop-in compatibility at compile-time and runtime.
 
-## What is this?
+## What's this?
 
 SafeLibs maintains Rust reimplementations of widely-used C/C++ libraries. Each port ships as a `.deb` that's binary-compatible with the original Ubuntu library package — already-built consumer binaries pick up the replacement at runtime, no relink (let alone recompile) required.
 
@@ -158,7 +158,7 @@ Stage columns track each repo's `01-recon`/`02-setup`/`03-port`/`04-test` tags. 
 
 **ABI unsafe** is forced by the C surface — functions taking `*const T`/`*mut T`, `extern "C"` functions, or `unsafe fn` exposed across the FFI boundary. **Other unsafe** is everything else: transmutes, raw allocator handoff, intrinsics, `static mut`. The ABI share is the cost of drop-in compatibility; a Rust-only consumer story, or a non-ABI-stable distro target like Nix, would let a future pipeline drop a large fraction of those blocks.
 
-## Who is responsible for this?
+## Who's responsible for this?
 
 Like many cool things, this project started out as idle speculation and then got out of hand.
 The guilty parties:
