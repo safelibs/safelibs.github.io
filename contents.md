@@ -110,7 +110,7 @@ Ideally the agents wrap it in a C ABI compatibility layer rather than redoing th
 
 ### What's the license on a port?
 
-IANAL, but: almost certainly the original library's license. A port is a derivative work — the C source shapes the Rust translation, and the test suite is lifted (and adapted) directly from upstream. Treat each port as carrying the upstream license until somebody who actually is a lawyer says otherwise.
+IANAL, but: almost certainly the original library's license. A port is a derivative work — the C source shapes the Rust translation, and the test suite is lifted (and adapted) directly from upstream. I treat each port as carrying the upstream license until somebody who actually is a lawyer says otherwise.
 
 ## Ports
 
