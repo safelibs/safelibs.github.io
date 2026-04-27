@@ -4,9 +4,9 @@ SafeLibs builds memory-safe (Rust) reimplementations of critical load-bearing C/
 
 ## Mission
 
-- Reimplement widely-used C/C++ libraries in Rust for memory safety.
-- Preserve C ABI and behavioral compatibility so existing consumers can relink without source changes.
-- Keep ports practical for production by retaining performance characteristics.
+- Rewrite widely-used C/C++ libraries in Rust for memory safety.
+- Hold the original C ABI so existing binaries relink unchanged.
+- Match the upstream library's performance — not a soft-fork approximation of it.
 
 ## Priorities
 
@@ -14,13 +14,11 @@ SafeLibs builds memory-safe (Rust) reimplementations of critical load-bearing C/
 2. Performance.
 3. Memory safety.
 
-## Non-goal
-
-Long-term maintainability of each individual translated codebase is not a primary goal.
-
 ## Maintainability
 
-The working model is retranslating from upstream as original projects evolve (eventually, maybe nightly!), then re-validating compatibility and performance. In fact, we will NOT accept code PRs to the ported libraries themselves: we don't know the codebase well enough to reason about malicious patches, etc. We'll happily accept issues against the repo with an example of the failing workflow, then sic our agents on them, though!
+Per-port maintainability isn't a goal. The ports are regenerable artifacts: when an upstream release lands, we re-run the pipeline against the new source instead of hand-patching the Rust output (eventually nightly, if the economics work out).
+
+That model is also why we don't take code PRs against the ported libraries — we don't audit the generated Rust closely enough to reason about adversarial patches. Reproducer issues are a different story; see the FAQ.
 
 ## FAQ
 
@@ -44,10 +42,7 @@ Any answer to this question will be meaningless, because it will be obsolete in 
 
 rofl
 
-In all seriousness, no one but the AI has ever looked at this code, and that goes for both the actual library reimplementations and the pipeline itself.
-Even if the libraries _are_ perfect (and I'm sure they're not!), the best they'll do is protect against some memory safety issues in the original library.
-The actual programs using these libraries can still be vulnerable, or other libraries can be vulnerable, or the `unsafe` parts of these libraries can still be vulnerable, or there could be new and exotic non-memory errors in these libraries, or these libraries might set your computer on fire and turn your AI agent against you.
-_I_ don't use these things, and you'd be crazy to, but they're there if you want to try them out!
+In all seriousness: no. No human has ever read this code — not the library reimplementations, not the pipeline. Even if a port _were_ perfect (and none are), the best it could do is fix memory-safety bugs in that one upstream library. The application using it can still be vulnerable, other libraries it links against can still be vulnerable, or the `unsafe` parts of these libraries can still be vulnerable, or the translation can introduce entirely new non-memory bugs, or these libraries might set your computer on fire and turn your AI agent against you. _I_ don't use these things, and you'd be crazy to — but they're here if you want to try them out.
 
 ### Are these libraries correct?
 
@@ -91,15 +86,15 @@ We can't accept code patches against the ported libraries — we don't audit the
 
 ## Project Structure
 
-Each target library lives in its own `port-LIBNAME` repo in the https://github.com/safelibs org.
-This website lives in https://github.com/safelibs/safelibs.github.io repo.
-The pipeline itself lives in https://github.com/safelibs/pipeline
+- Each target library lives in its own `port-LIBNAME` repo under https://github.com/safelibs
+- The pipeline lives at https://github.com/safelibs/pipeline
+- This site lives at https://github.com/safelibs/safelibs.github.io
 
 ## Port Status
 
 As of April 21, 2026, the SafeLibs org has {{validating_count}} library `port-*` repositories that currently pass the validator proof at `port-04-test`, plus the shared `port-template` repository.
-They are all private right now, so this public site is intentionally not pretending to have a live public scoreboard yet.
-When the verification artifacts are ready to expose, this section should show actual compatibility results instead of vibes.
+
+The repos are still private, so this page intentionally isn't pretending to be a live public scoreboard. Once the verification artifacts are ready to expose, this section will show real compatibility results in place of the count.
 
 ## Port Effort Stats
 

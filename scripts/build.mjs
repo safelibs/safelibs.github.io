@@ -27,7 +27,6 @@ const missionText = getSection("Mission");
 const missionItems = extractListItems(missionText, "Mission");
 const prioritiesText = getSection("Priorities");
 const prioritiesBlocks = parseBlocks(prioritiesText);
-const nonGoalBlocks = parseBlocks(getSection("Non-goal"));
 const maintainabilityBlocks = parseBlocks(getSection("Maintainability"));
 const faqEntries = extractSubsections(getSection("FAQ"), "FAQ");
 const pipelineFaq = faqEntries.find((entry) => entry.title === "How are the agents harnessed?");
@@ -110,12 +109,13 @@ const html = `<!doctype html>
           </div>
           <div class="split-grid">
             <article class="panel">
+              <h3>Scope</h3>
               <ul class="feature-list">
                 ${missionItems.map((item) => `<li>${renderInline(item)}</li>`).join("")}
               </ul>
             </article>
             <article class="panel">
-              <h3>Priorities</h3>
+              <h3>Priorities, in order</h3>
               ${renderBlocks(prioritiesBlocks)}
             </article>
           </div>
@@ -125,16 +125,9 @@ const html = `<!doctype html>
           <div class="section-heading">
             <h2>Maintainability</h2>
           </div>
-          <div class="split-grid">
-            <article class="panel">
-              <h3>Non-goal</h3>
-              ${renderBlocks(nonGoalBlocks)}
-            </article>
-            <article class="panel">
-              <h3>Maintainability</h3>
-              ${renderBlocks(maintainabilityBlocks)}
-            </article>
-          </div>
+          <article class="panel prose">
+            ${renderBlocks(maintainabilityBlocks)}
+          </article>
         </section>
 
         <section class="section" id="pipeline">
@@ -203,10 +196,11 @@ const html = `<!doctype html>
           </div>
           <div class="split-grid">
             <article class="panel">
+              <h3>What a port provides</h3>
               ${renderBlocks(compatibilityBlocks)}
             </article>
             <article class="panel">
-              <h3>Verification Philosophy</h3>
+              <h3>How we verify it</h3>
               ${renderBlocks(verificationBlocks)}
             </article>
           </div>
