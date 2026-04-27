@@ -39,7 +39,6 @@ const expectations = [
   "<h2>Port Effort Stats</h2>",
   "<h2>Compatibility Contract</h2>",
   "<h2>FAQ</h2>",
-  "Generated from <code>contents.md</code>",
   "<link rel=\"icon\" href=\"data:image/svg+xml,",
   "How are the agents harnessed?",
   "rofl",

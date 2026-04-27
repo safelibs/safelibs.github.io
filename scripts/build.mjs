@@ -47,7 +47,6 @@ const compatibilitySection = getSection("Compatibility Contract");
 const compatibilityLeadText = getSectionLead(compatibilitySection);
 const compatibilityBlocks = parseBlocks(compatibilityLeadText);
 const verificationBlocks = parseBlocks(getSubsection(compatibilitySection, "Verification Philosophy"));
-const buildTimestamp = new Date().toISOString();
 const metaDescription = truncate(stripMarkdown(intro), 180);
 
 const html = `<!doctype html>
@@ -93,7 +92,6 @@ const html = `<!doctype html>
 
       <main class="site-main">
         <section class="hero" id="top">
-          <p class="eyebrow">Generated from <code>contents.md</code></p>
           <h1>${escapeHtml(title)}</h1>
           <div class="hero-copy">
             ${renderBlocks(introBlocks)}
@@ -223,14 +221,6 @@ const html = `<!doctype html>
           </div>
         </section>
       </main>
-
-      <footer class="site-footer">
-        <p class="footer-copy">Generated from <code>contents.md</code>.</p>
-        <p class="footer-note">
-          Built from source text on
-          <time data-build-time datetime="${buildTimestamp}">${buildTimestamp}</time>
-        </p>
-      </footer>
     </div>
   </body>
 </html>

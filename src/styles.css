@@ -50,9 +50,7 @@ a {
 
 code,
 pre,
-.eyebrow,
 .timeline-index,
-.footer-note,
 .stats-table {
   font-family: "IBM Plex Mono", monospace;
 }
@@ -76,15 +74,11 @@ code {
   padding: 1.25rem 0 4rem;
 }
 
-.site-header,
-.site-footer {
+.site-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-}
-
-.site-header {
   padding-bottom: 1.5rem;
 }
 
@@ -148,14 +142,6 @@ code {
 .hero {
   padding: 2rem;
   border-radius: 1.8rem;
-}
-
-.eyebrow {
-  margin: 0;
-  color: var(--accent);
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .hero h1 {
@@ -447,44 +433,14 @@ code {
   padding: 0 1.3rem 1.25rem;
 }
 
-.site-footer {
-  margin-top: 3rem;
-  padding-top: 1.4rem;
-  border-top: 1px solid rgba(124, 157, 185, 0.14);
-  align-items: flex-end;
-}
-
-.footer-copy,
-.footer-note {
-  margin: 0;
-}
-
-.footer-copy {
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-.footer-note {
-  color: rgba(230, 237, 246, 0.64);
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-align: right;
-}
-
 @media (max-width: 860px) {
-  .site-header,
-  .site-footer {
+  .site-header {
     flex-direction: column;
     align-items: flex-start;
   }
 
   .split-grid {
     grid-template-columns: 1fr;
-  }
-
-  .footer-note {
-    text-align: left;
   }
 }
 
