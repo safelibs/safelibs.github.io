@@ -95,7 +95,7 @@ const html = `<!doctype html>
 
       <main class="site-main">
         <section class="hero" id="top">
-          <h1>${escapeHtml(title)}</h1>
+          <h1>${escapeHtml(title)}<span class="beta-badge" aria-label="Beta">BETA</span></h1>
           <div class="hero-copy">
             ${renderBlocks(introBlocks)}
           </div>
