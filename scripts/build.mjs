@@ -89,10 +89,6 @@ const html = `<!doctype html>
           <div class="hero-copy">
             ${renderBlocks(introBlocks)}
           </div>
-          <div class="hero-actions">
-            <a class="button button-primary" href="#what">What is this?</a>
-            <a class="button" href="#ports">What's Ported?</a>
-          </div>
         </section>
 
         <section class="section" id="what">
