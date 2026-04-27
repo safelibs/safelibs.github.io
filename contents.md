@@ -104,6 +104,10 @@ The current focus is Ubuntu drop-in replacements via apt, which forces strict AB
 
 We can't accept code patches against the ported libraries — we don't audit the generated Rust closely enough to reason about adversarial PRs. We _do_ accept reproducer testcases against the [validator repo](https://github.com/safelibs/validator) — the Test stage picks those up and re-runs the affected port until it passes.
 
+### What if there is already a Rust implementation?
+
+Ideally the agents wrap it in a C ABI compatibility layer rather than redoing the work from scratch. The goal is rustification — getting C consumers off C — not reimplementation for its own sake. If a mature Rust implementation already exists, gluing a drop-in C ABI onto it is the cheaper, lower-risk path, and it inherits whatever review the existing crate has already had.
+
 ### What's the license on a port?
 
 IANAL, but: almost certainly the original library's license. A port is a derivative work — the C source shapes the Rust translation, and the test suite is lifted (and adapted) directly from upstream. Treat each port as carrying the upstream license until somebody who actually is a lawyer says otherwise.
