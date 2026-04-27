@@ -1,0 +1,3 @@
+Stage columns track each repo's `01-recon`/`02-setup`/`03-port`/`04-test` tags. Sessions past the last completed tag count toward the next in-progress stage, so ports in earlier stages show partial column coverage. Agent time sums per-session wall clock, so parallel sessions stack as parallel agent-hours.
+
+**ABI unsafe** is forced by the C surface — functions taking `*const T`/`*mut T`, `extern "C"` functions, or `unsafe fn` exposed across the FFI boundary. **Other unsafe** is everything else: transmutes, raw allocator handoff, intrinsics, `static mut`. The ABI share is the cost of drop-in compatibility; a Rust-only consumer story, or a non-ABI-stable distro target like Nix, would let a future pipeline drop a large fraction of those blocks.

@@ -420,7 +420,7 @@ code {
   line-height: 1.65;
 }
 
-.what-article > .lead p,
+.what-article > p:first-of-type,
 .ports-article > p:first-of-type {
   font-size: 1.15rem;
   line-height: 1.55;
@@ -440,7 +440,7 @@ code {
 }
 
 .what-article > h3:first-of-type,
-.what-article > .lead + h3 {
+.what-article > p:first-of-type + h3 {
   margin-top: 0.4rem;
 }
 
