@@ -38,6 +38,7 @@ const expectations = [
   "<h2>Port Status</h2>",
   "<h2>Port Effort Stats</h2>",
   "<h2>Compatibility Contract</h2>",
+  "<h2>Other Efforts</h2>",
   "<h2>FAQ</h2>",
   "<link rel=\"icon\" href=\"data:image/svg+xml,",
   "How are the agents harnessed?",

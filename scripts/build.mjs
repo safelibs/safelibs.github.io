@@ -43,6 +43,7 @@ const pipelineStages = pipelineListBlock ? pipelineListBlock.items : [];
 const projectStructureBlocks = parseBlocks(getSection("Project Structure"));
 const portStatusBlocks = parseBlocks(getSection("Port Status"));
 const effortStatsBlocks = parseBlocks(getSection("Port Effort Stats"));
+const otherEffortsBlocks = parseBlocks(getSection("Other Efforts"));
 const compatibilitySection = getSection("Compatibility Contract");
 const compatibilityLeadText = getSectionLead(compatibilitySection);
 const compatibilityBlocks = parseBlocks(compatibilityLeadText);
@@ -86,6 +87,7 @@ const html = `<!doctype html>
           <a href="#pipeline">Pipeline</a>
           <a href="#effort">Stats</a>
           <a href="#contract">Contract</a>
+          <a href="#other-efforts">Other</a>
           <a href="#faq">FAQ</a>
         </nav>
       </header>
@@ -183,6 +185,15 @@ const html = `<!doctype html>
           </div>
           <article class="panel prose">
             ${renderBlocks(effortStatsBlocks)}
+          </article>
+        </section>
+
+        <section class="section" id="other-efforts">
+          <div class="section-heading">
+            <h2>Other Efforts</h2>
+          </div>
+          <article class="panel prose">
+            ${renderBlocks(otherEffortsBlocks)}
           </article>
         </section>
 

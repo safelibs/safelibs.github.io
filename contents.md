@@ -66,15 +66,28 @@ If you harness it brutally enough, like it's harnessed here, it sometimes works!
 
 ### How are the agents harnessed?
 
-This repo uses a four-stage pipeline:
+This repo uses a four-stage pipeline driven by Juvenal (https://github.com/zardus/juvenal), a workflow manager named after the Roman poet — riffing on "who watches the watchmen?" Each stage uses one or more Juvenal workflows to achieve and verify its goals despite agentic laziness, and each successful stage produces a git tag in the respective repo.
 
-1. Recon - get library source code and other info (CVEs, etc)
-2. Setup - prepare the source for porting, including translating the tests to use public APIs where possible and augmenting them in other ways
-3. Port - do the rust port!
-4. Test - test with additional client applications
+Juvenal leans on a behavioral quirk of coding agents: they will happily cut corners on their own work, but have no incentive to cover for _another_ agent's shortcuts. After every implementation step, several fresh-context validation agents check the result against different criteria; anything missing bounces back to the implementer, dozens of times if necessary. The Port stage in particular doesn't share a workflow across libraries — a planning agent drafts and iteratively refines a library-specific workflow before any porting starts, because no single template fits every C library.
 
-Each successful stage results in a git tag in the respective repo.
-Each stage uses a https://github.com/zardus/juvenal workflow (or set of workflows) to achieve and verify the goals despite agentic laziness!
+1. Recon - pull the original source (via Ubuntu's source packages) and existing CVEs, so the port has historical context for known non-memory issues.
+2. Setup - prepare the source for porting, rewriting tests to use public library APIs (so they survive a clean reimplementation) and adding new ones, both directly against the library and through dependent applications.
+3. Port - do the rust port. A planning agent first builds a library-specific workflow, then implementation and validation agents execute and check it step by step.
+4. Test - exercise the port against additional client applications and the validator suite.
+
+The full pipeline definitions live in the [pipeline repo](https://github.com/safelibs/pipeline).
+
+### What about upgrading to new library versions?
+
+Each port is a regenerable artifact — the workflow can be rerun from scratch against a new upstream release. There's also a dedicated upgrade stage in the pipeline that's intended to be cheaper than full retranslation, though it hasn't been battle-tested yet.
+
+### Will these work outside of Ubuntu?
+
+The current focus is Ubuntu drop-in replacements via apt, which forces strict ABI compatibility and shapes a sizable chunk of the unsafe-block count. Distributions with stricter, content-addressed semantics (like Nix) would be a better fit for agent-generated replacements; if you're interested in extending coverage there, get in touch.
+
+### How do I report a port bug?
+
+We can't accept code patches against the ported libraries — we don't audit the generated Rust closely enough to reason about adversarial PRs. We _do_ accept reproducer testcases against the [validator repo](https://github.com/safelibs/validator) — the Test stage picks those up and re-runs the affected port until it passes.
 
 ## Project Structure
 
@@ -99,6 +112,7 @@ Agent time is the sum of per-session wall time, so parallel sessions add up as p
 
 The unsafe columns split each port's `unsafe { ... }` blocks two ways: **ABI unsafe** is forced by the C surface (functions taking `*const T`/`*mut T`, `extern "C"` functions, or `unsafe fn` exposed across the FFI boundary), and **Other unsafe** is everything else — transmutes, raw allocator handoff, intrinsics, `static mut`, etc.
 Across all {{validating_count}} validating ports: **{{total_unsafe}}** blocks total, {{abi_unsafe}} ({{abi_unsafe_pct}}%) ABI and {{other_unsafe}} ({{other_unsafe_pct}}%) other.
+The ABI share is largely a tax for staying drop-in compatible with existing C consumers; relaxing that constraint (e.g. for a Rust-only consumer story or a non-ABI-stable distro target) would let a future pipeline drop a large fraction of those blocks.
 
 | Library | Completed stage | Sessions | Total tokens | Recon tokens | Setup tokens | Port tokens | Test tokens | Agent time | Calendar span | Total unsafe | ABI unsafe | Other unsafe |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -126,6 +140,11 @@ Across all {{validating_count}} validating ports: **{{total_unsafe}}** blocks to
 | `libxml` | `04-test` | 463 | 1,757.6M | 6.1M | 749.3M | 884.8M | 117.4M | 85.2h | 75.5h | 1,560 | 1,425 | 135 |
 | `libyaml` | `04-test` | 307 | 376.3M | 1.9M | 34.0M | 187.2M | 153.3M | 34.1h | 37.9h | 126 | 64 | 62 |
 | `libzstd` | `04-test` | 281 | 1,775.7M | 1.7M | 210.7M | 514.4M | 1,048.9M | 85.0h | 128.5h | 183 | 153 | 30 |
+
+## Other Efforts
+
+- DARPA's TRACTOR program (Translating All C To Rust) is the broader DoD-funded push behind agentic C-to-Rust translation, and a conceptual ancestor of work like this.
+- The "ralph loop" pattern at https://github.com/snarktank/ralph is a popular minimal harness for keeping agents on-task across long jobs; SafeLibs uses a structured planning + validation pipeline instead, but starts from the same observation that agents quit early on big tasks.
 
 ## Compatibility Contract
 
