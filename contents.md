@@ -33,10 +33,10 @@ A completed SafeLibs port should provide:
 
 ### How we verify it
 
-SafeLibs verification is clean-room by design:
+Each port runs through the same swap test:
 
 - Run baseline tests against the original Ubuntu C library package.
-- Purge original runtime/dev packages from the test environment.
+- Purge the original runtime/dev packages from the test environment.
 - Install SafeLibs-generated `.deb` replacements.
 - Re-run the exact same tests and consumer checks.
 
