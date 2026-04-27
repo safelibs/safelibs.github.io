@@ -74,10 +74,13 @@ Beyond that, who knows!
 Rule of thumb: if you still have a sandbox on in your AI agent, you should probably not use these libraries.
 If your agent's sandbox is off, you have already made the leap!
 
-### Why does this pipeline use codex and not claude?
+### How can I help?
 
-Unfortunately, despite Claude's dominance, Codex gives FAR more tokens in their top plan, so that's what we're using here.
-If you harness it brutally enough, like it's harnessed here, it sometimes works!
+Two real bottlenecks right now: humanpower and tokens.
+
+**Humanpower.** Scaling agentic ports is tricky from a security standpoint — supply-chain attacks are exactly the kind of thing that gets worse as you grow. If you and I trust each other and you're interested in pitching in, get in touch. If you're in a position to fund this kind of work, sponsoring my lab is the most direct way to keep it going.
+
+**AI compute.** ASU's infinite-Codex experiment is over and there's no great replacement queued up. If you can throw tokens our way, that's huge. One obvious next move is using more agents to audit the agent-generated code, and it'd be especially cool to see what a next-generation frontier model could do here — if a frontier lab wants to collaborate, looking at you @anthropic, @openai, @google.
 
 ### How are the agents harnessed?
 
