@@ -20,7 +20,7 @@ SafeLibs maintains Rust reimplementations of widely-used C/C++ libraries. Each p
 
 ### Maintainability
 
-Per-port maintainability isn't a goal. The ports are regenerable artifacts: when upstream changes, we re-run the pipeline against the new source instead of hand-patching the Rust output (eventually nightly, if the economics work out). For the same reason we don't take code PRs against the ported libraries — we don't audit the generated Rust closely enough to reason about adversarial patches. Reproducer issues are a different story; see the FAQ.
+Per-port maintainability isn't a goal. The ports are regenerable artifacts: when upstream changes, we re-run the pipeline against the new source instead of hand-patching the Rust output (eventually nightly, if the economics work out). For the same reason we don't take code PRs against the ported libraries — we don't audit the generated Rust closely enough to reason about adversarial patches. Reproducer issues are a different story; [see the FAQ](#faq).
 
 ### What a port provides
 
