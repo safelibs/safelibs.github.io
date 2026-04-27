@@ -51,7 +51,7 @@ Beyond that, who knows!
 
 ### But should I use these libraries?
 
-If you still have a sandbox on in your AI agent, you should probably not use these libraries.
+Rule of thumb: if you still have a sandbox on in your AI agent, you should probably not use these libraries.
 If your agent's sandbox is off, you have already made the leap!
 
 ### Why does this pipeline use codex and not claude?
