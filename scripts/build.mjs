@@ -30,14 +30,8 @@ const prioritiesBlocks = parseBlocks(getSubsection(whatSection, "Priorities, in 
 const maintainabilityBlocks = parseBlocks(getSubsection(whatSection, "Maintainability"));
 const providesBlocks = parseBlocks(getSubsection(whatSection, "What a port provides"));
 const verifyBlocks = parseBlocks(getSubsection(whatSection, "How we verify it"));
-const faqEntries = extractSubsections(getSection("FAQ"), "FAQ");
-const pipelineFaq = faqEntries.find((entry) => entry.title === "How are the agents harnessed?");
-
-if (!pipelineFaq) {
-  throw new Error("Expected FAQ entry for pipeline details");
-}
-
-const pipelineBlocks = parseBlocks(pipelineFaq.body);
+const faqEntries = extractSubsections(getSection("Other FAQs"), "Other FAQs");
+const pipelineBlocks = parseBlocks(getSection("The Pipeline"));
 const pipelineListBlock = pipelineBlocks.find((block) => block.type === "ol");
 const pipelineLeadBlocks = pipelineBlocks.filter((block) => block !== pipelineListBlock);
 const pipelineStages = pipelineListBlock ? pipelineListBlock.items : [];
@@ -83,7 +77,7 @@ const html = `<!doctype html>
           <a href="#ports">The Ports</a>
           <a href="#pipeline">The Pipeline</a>
           <a href="#other-efforts">Other efforts</a>
-          <a href="#faq">FAQ</a>
+          <a href="#faq">Other FAQs</a>
         </nav>
       </header>
 
@@ -189,7 +183,7 @@ const html = `<!doctype html>
 
         <section class="section" id="faq">
           <div class="section-heading">
-            <h2>FAQ</h2>
+            <h2>Other FAQs</h2>
           </div>
           <div class="faq-list">
             ${faqEntries

@@ -35,9 +35,8 @@ const expectations = [
   "<h2>The Pipeline</h2>",
   "<h2>The Ports</h2>",
   "<h2>Other efforts</h2>",
-  "<h2>FAQ</h2>",
+  "<h2>Other FAQs</h2>",
   "<link rel=\"icon\" href=\"data:image/svg+xml,",
-  "How are the agents harnessed?",
   "rofl",
   "Recon",
   "Setup",
@@ -81,8 +80,9 @@ for (const [content, snippet, message] of removedRevealSnippets) {
 const exactOccurrences = [
   ["Run baseline tests against the original Ubuntu C library package.", 1],
   ["Binary-compatible exported symbols.", 1],
-  ["How are the agents harnessed?", 1],
+  ["How are the agents harnessed?", 0],
   ["<h2>The Ports</h2>", 1],
+  ["<h2>The Pipeline</h2>", 1],
   ["<h2>What is this?</h2>", 1]
 ];
 
