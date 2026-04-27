@@ -90,21 +90,14 @@ When the verification artifacts are ready to expose, this section should show ac
 
 ## Port Effort Stats
 
-Pulled from `~/codex_sessions.bak` on April 21, 2026, counting Codex sessions whose workspace metadata points at a current `port-*` repo.
-Sessions before each repo's first commit are dropped (this excludes 315 prototype-era sessions / 646.9M tokens across the February runs of `libzstd`, `libyaml`, `libpng`, `libsodium`, `libjpeg-turbo`, `libcurl`, `libbz2`, and `giflib`), as are root-level orchestration sessions and the archive-only `libssl` run.
+Per-library token spend, agent time, and unsafe-block counts across the 24 active `port-*` repos.
+In total: **6,251 sessions, 19.93B tokens, 1,129.5 agent-hours** from March 27 to April 11, 2026 UTC, with a stage-token split of 2.63B recon, 2.90B setup, 8.50B port, 5.90B test.
 
-Token counts come from each session's final `total_token_usage.total_tokens` (cached input included).
-Agent time sums per-session wall time, so parallel sessions add up as parallel agent-hours.
-Calendar span runs from the first counted session start to the last.
-Stage buckets follow the repo's `01-recon`/`02-setup`/`03-port`/`04-test` tags; sessions after the last completed tag count toward the next in-progress stage — which is why `glib`, `libc6`, and `libcurl` show port-stage spend at `02-setup`, and `libgcrypt` shows test-stage spend at `03-port`.
+Stage columns follow each repo's `01-recon`/`02-setup`/`03-port`/`04-test` tags; sessions past the last completed tag count toward the next in-progress stage, which is why `glib`, `libc6`, and `libcurl` show port-stage spend at `02-setup`, and `libgcrypt` shows test-stage spend at `03-port`.
+Agent time is the sum of per-session wall time, so parallel sessions add up as parallel agent-hours.
 
-In total: **6,251 sessions, 19.93B tokens, 1,129.5 agent-hours** from March 27 to April 11, 2026 UTC.
-The stage-token split is 2.63B recon, 2.90B setup, 8.50B port, 5.90B test.
-
-The unsafe columns count `unsafe { ... }` blocks in each port's current `safe/` tree, classified by `pipeline/ports/.unsafe-non-abi.py`.
-**ABI unsafe** is forced by the C surface — the enclosing function takes `*const T`/`*mut T`, is `extern "C"`, or is itself an `unsafe fn` across the FFI boundary.
-**Other unsafe** is everything else: transmutes, raw allocator handoff, intrinsics, `static mut`, and similar internal choices.
-Across the 24 active ports there are **17,626** `unsafe { }` blocks total — 13,450 (76.3%) ABI, 4,176 (23.7%) other.
+The unsafe columns split each port's `unsafe { ... }` blocks two ways: **ABI unsafe** is forced by the C surface (functions taking `*const T`/`*mut T`, `extern "C"` functions, or `unsafe fn` exposed across the FFI boundary), and **Other unsafe** is everything else — transmutes, raw allocator handoff, intrinsics, `static mut`, etc.
+Across all 24 ports: **17,626** blocks total, 13,450 (76.3%) ABI and 4,176 (23.7%) other.
 
 | Library | Completed stage | Sessions | Total tokens | Recon tokens | Setup tokens | Port tokens | Test tokens | Agent time | Calendar span | Total unsafe | ABI unsafe | Other unsafe | Difficulty notes |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
