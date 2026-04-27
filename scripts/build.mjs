@@ -388,7 +388,12 @@ function renderBlocks(blocks) {
             <table class="stats-table">
               <thead>
                 <tr>
-                  ${block.header.map((cell) => `<th scope="col">${renderInline(cell)}</th>`).join("")}
+                  ${block.header
+                    .map(
+                      (cell, cellIndex) =>
+                        `<th scope="col"${numericColumns.includes(cellIndex) ? ' class="numeric"' : ""}>${renderInline(cell)}</th>`
+                    )
+                    .join("")}
                 </tr>
               </thead>
               <tbody>
