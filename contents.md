@@ -91,11 +91,11 @@ We can't accept code patches against the ported libraries — we don't audit the
 
 ## Port Status
 
-As of April 21, 2026, the SafeLibs org has {{validating_count}} library `port-*` repositories that currently pass the validator proof at `port-04-test`. Per-port detail will land here once the source repos are public.
+{{validating_count}} libraries passing [validation](https://safelibs.org/validator).
 
 ## Port Effort Stats
 
-Across {{validating_count}} validating `port-*` repos between March 27 and April 11, 2026 UTC: **{{total_sessions}} sessions, {{total_tokens_b}}B tokens, {{total_agent_hours}} agent-hours**, with a stage-token split of {{recon_tokens_b}}B recon, {{setup_tokens_b}}B setup, {{port_tokens_b}}B port, {{test_tokens_b}}B test.
+Across the {{validating_count}} validating ports so far: **{{total_sessions}} sessions, {{total_tokens_b}}B tokens, {{total_agent_hours}} agent-hours**, split {{recon_tokens_b}}B recon, {{setup_tokens_b}}B setup, {{port_tokens_b}}B port, {{test_tokens_b}}B test.
 
 | Library | Completed stage | Sessions | Total tokens | Recon tokens | Setup tokens | Port tokens | Test tokens | Agent time | Calendar span | Total unsafe | ABI unsafe | Other unsafe |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -134,7 +134,7 @@ Stage columns track each repo's `01-recon`/`02-setup`/`03-port`/`04-test` tags. 
 
 ## Other Efforts
 
-- DARPA's TRACTOR program (Translating All C To Rust) is the broader DoD-funded push behind agentic C-to-Rust translation, and a conceptual ancestor of work like this.
+- DARPA's [TRACTOR program](https://www.darpa.mil/research/programs/translating-all-c-to-rust) (Translating All C To Rust) is the broader DoD-funded push behind agentic C-to-Rust translation, and a conceptual ancestor of work like this.
 - The "ralph loop" pattern at https://github.com/snarktank/ralph is a popular minimal harness for keeping agents on-task across long jobs; SafeLibs uses a structured planning + validation pipeline instead, but starts from the same observation that agents quit early on big tasks.
 
 ## Compatibility Contract

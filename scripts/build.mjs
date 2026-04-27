@@ -40,7 +40,7 @@ const pipelineListBlock = pipelineBlocks.find((block) => block.type === "ol");
 const pipelineLeadBlocks = pipelineBlocks.filter((block) => block !== pipelineListBlock);
 const pipelineStages = pipelineListBlock ? pipelineListBlock.items : [];
 const projectStructureBlocks = parseBlocks(getSection("Project Structure"));
-const portStatusBlocks = parseBlocks(getSection("Port Status"));
+getSection("Port Status");
 const effortStatsSection = getSection("Port Effort Stats");
 const effortStatsLeadBlocks = parseBlocks(getSectionLead(effortStatsSection));
 const effortStatsNotesBlocks = parseBlocks(getSubsection(effortStatsSection, "Notes"));
@@ -169,15 +169,10 @@ const html = `<!doctype html>
           <div class="section-heading">
             <h2>Port Status</h2>
           </div>
-          <div class="status-grid">
-            <article class="panel stat-card">
-              <span class="stat-number">${escapeHtml(statsTokens.validating_count)}</span>
-              <span class="stat-label">libraries passing <code>port-04-test</code></span>
-            </article>
-            <article class="panel prose">
-              ${renderBlocks(portStatusBlocks)}
-            </article>
-          </div>
+          <article class="panel stat-card stat-card-wide">
+            <span class="stat-number">${escapeHtml(statsTokens.validating_count)}</span>
+            <span class="stat-label">libraries passing <a href="https://safelibs.org/validator" target="_blank" rel="noreferrer">validation</a></span>
+          </article>
         </section>
 
         <section class="section" id="effort">
