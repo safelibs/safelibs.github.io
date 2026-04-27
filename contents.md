@@ -40,7 +40,7 @@ Each port runs through the same swap test:
 - Install SafeLibs-generated `.deb` replacements.
 - Re-run the exact same tests and consumer checks.
 
-## The Pipeline
+## How's it done?
 
 Each port runs through a four-stage pipeline driven by Juvenal (https://github.com/zardus/juvenal), a workflow manager named after the Roman poet — riffing on "who watches the watchmen?" Each stage uses one or more Juvenal workflows to achieve and verify its goals despite agentic laziness, and each successful stage produces a git tag in the respective repo.
 
@@ -119,7 +119,7 @@ Ideally the agents wrap it in a C ABI compatibility layer rather than redoing th
 
 IANAL, but: almost certainly the original library's license. A port is a derivative work — the C source shapes the Rust translation, and the test suite is lifted (and adapted) directly from upstream. I treat each port as carrying the upstream license until somebody who actually is a lawyer says otherwise.
 
-## Ports
+## What's Ported?
 
 Across the {{validating_count}} validating ports so far: **{{total_sessions}} sessions, {{total_tokens_b}}B tokens, {{total_agent_hours}} agent-hours**, split {{recon_tokens_b}}B recon, {{setup_tokens_b}}B setup, {{port_tokens_b}}B port, {{test_tokens_b}}B test.
 

@@ -31,11 +31,11 @@ const maintainabilityBlocks = parseBlocks(getSubsection(whatSection, "Maintainab
 const providesBlocks = parseBlocks(getSubsection(whatSection, "What a port provides"));
 const verifyBlocks = parseBlocks(getSubsection(whatSection, "How we verify it"));
 const faqEntries = extractSubsections(getSection("Other FAQs"), "Other FAQs");
-const pipelineBlocks = parseBlocks(getSection("The Pipeline"));
+const pipelineBlocks = parseBlocks(getSection("How's it done?"));
 const pipelineListBlock = pipelineBlocks.find((block) => block.type === "ol");
 const pipelineLeadBlocks = pipelineBlocks.filter((block) => block !== pipelineListBlock);
 const pipelineStages = pipelineListBlock ? pipelineListBlock.items : [];
-const portsSection = getSection("Ports");
+const portsSection = getSection("What's Ported?");
 const portsLeadBlocks = parseBlocks(getSectionLead(portsSection));
 const portsNotesBlocks = parseBlocks(getSubsection(portsSection, "Notes"));
 const responsibleBlocks = parseBlocks(getSection("Who is responsible for this?"));
@@ -75,8 +75,8 @@ const html = `<!doctype html>
         </a>
         <nav class="top-nav" aria-label="Section navigation">
           <a href="#what">What is this?</a>
-          <a href="#ports">The Ports</a>
-          <a href="#pipeline">The Pipeline</a>
+          <a href="#ports">What's Ported?</a>
+          <a href="#pipeline">How's it done?</a>
           <a href="#responsible">Who?</a>
           <a href="#other-efforts">Other efforts</a>
           <a href="#faq">Other FAQs</a>
@@ -91,7 +91,7 @@ const html = `<!doctype html>
           </div>
           <div class="hero-actions">
             <a class="button button-primary" href="#what">What is this?</a>
-            <a class="button" href="#ports">The Ports</a>
+            <a class="button" href="#ports">What's Ported?</a>
           </div>
         </section>
 
@@ -118,7 +118,7 @@ const html = `<!doctype html>
 
         <section class="section" id="ports">
           <div class="section-heading">
-            <h2>The Ports</h2>
+            <h2>What's Ported?</h2>
           </div>
           <p class="ports-headline-line">
             <span class="big-number">${escapeHtml(statsTokens.validating_count)}</span>
@@ -152,7 +152,7 @@ const html = `<!doctype html>
 
         <section class="section" id="pipeline">
           <div class="section-heading">
-            <h2>The Pipeline</h2>
+            <h2>How's it done?</h2>
           </div>
           <article class="panel">
             ${renderBlocks(pipelineLeadBlocks)}
@@ -588,10 +588,10 @@ function extractValidatingLibraries(siteData, mode) {
 }
 
 function applyValidatorFilter(text, validating) {
-  const sectionPattern = /(^## Ports\n\n[\s\S]*?)(?=^## )/m;
+  const sectionPattern = /(^## What's Ported\?\n\n[\s\S]*?)(?=^## )/m;
   const sectionMatch = `${text}\n## __END__`.match(sectionPattern);
   if (!sectionMatch) {
-    throw new Error("Unable to locate Ports section in contents.md");
+    throw new Error("Unable to locate What's Ported? section in contents.md");
   }
   const originalSection = sectionMatch[1];
 
