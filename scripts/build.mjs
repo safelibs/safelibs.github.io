@@ -80,8 +80,8 @@ const html = `<!doctype html>
         </a>
         <nav class="top-nav" aria-label="Section navigation">
           <a href="#what">What is this?</a>
-          <a href="#pipeline">Pipeline</a>
-          <a href="#ports">Ports</a>
+          <a href="#pipeline">The Pipeline</a>
+          <a href="#ports">The Ports</a>
           <a href="#other-efforts">Other efforts</a>
           <a href="#faq">FAQ</a>
         </nav>
@@ -95,7 +95,7 @@ const html = `<!doctype html>
           </div>
           <div class="hero-actions">
             <a class="button button-primary" href="#what">What is this?</a>
-            <a class="button" href="#ports">Ports</a>
+            <a class="button" href="#ports">The Ports</a>
           </div>
         </section>
 
@@ -122,7 +122,7 @@ const html = `<!doctype html>
 
         <section class="section" id="pipeline">
           <div class="section-heading">
-            <h2>Pipeline</h2>
+            <h2>The Pipeline</h2>
           </div>
           <article class="panel">
             ${renderBlocks(pipelineLeadBlocks)}
@@ -146,7 +146,7 @@ const html = `<!doctype html>
 
         <section class="section" id="ports">
           <div class="section-heading">
-            <h2>Ports</h2>
+            <h2>The Ports</h2>
           </div>
           <p class="ports-headline-line">
             <span class="big-number">${escapeHtml(statsTokens.validating_count)}</span>
