@@ -414,6 +414,83 @@ code {
   white-space: nowrap;
 }
 
+.section-lead {
+  font-size: 1.05rem;
+}
+
+.section-lead p {
+  color: rgba(230, 237, 246, 0.92);
+}
+
+.section .panel + .panel,
+.section .split-grid + .panel,
+.section .panel + .split-grid,
+.section .split-grid + .split-grid {
+  margin-top: 1rem;
+}
+
+.ports-summary {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) 2fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.ports-summary .stat-card {
+  align-items: flex-start;
+}
+
+.in-progress-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.4rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.in-progress-list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.35rem 0.55rem 0.35rem 0.65rem;
+  border: 1px solid var(--stroke);
+  border-radius: 0.7rem;
+  background: rgba(7, 16, 24, 0.6);
+  margin: 0;
+}
+
+.in-progress-list code {
+  font-size: 0.88rem;
+  color: var(--text);
+}
+
+.stage-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.18em 0.6em;
+  border-radius: 999px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  border: 1px solid currentColor;
+  color: var(--muted);
+  background: rgba(7, 16, 24, 0.4);
+}
+
+.stage-badge.stage-recon { color: #7faecf; }
+.stage-badge.stage-setup { color: #b88ee0; }
+.stage-badge.stage-port  { color: var(--accent); }
+.stage-badge.stage-test  { color: var(--teal); }
+
+.muted {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
 .status-grid {
   display: grid;
   grid-template-columns: minmax(220px, 1fr) 2fr;
@@ -506,6 +583,23 @@ code {
   margin-top: 0.9rem;
 }
 
+.site-footer {
+  margin-top: 3.5rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--stroke);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.footer-line {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.footer-line a {
+  color: var(--text);
+}
+
 .faq-list {
   display: grid;
   gap: 0.9rem;
@@ -552,7 +646,8 @@ code {
   }
 
   .split-grid,
-  .status-grid {
+  .status-grid,
+  .ports-summary {
     grid-template-columns: 1fr;
   }
 }

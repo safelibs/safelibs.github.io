@@ -31,14 +31,10 @@ const html = await readFile(join(rootDir, "dist", "index.html"), "utf8");
 
 const expectations = [
   "<title>SafeLibs | Memory-safe drop-in replacements</title>",
-  "<h2>Mission</h2>",
-  "<h2>Maintainability</h2>",
+  "<h2>What is this?</h2>",
   "<h2>Pipeline</h2>",
-  "<h2>Project Structure</h2>",
-  "<h2>Port Status</h2>",
-  "<h2>Port Effort Stats</h2>",
-  "<h2>Compatibility Contract</h2>",
-  "<h2>Other Efforts</h2>",
+  "<h2>Ports</h2>",
+  "<h2>Other efforts</h2>",
   "<h2>FAQ</h2>",
   "<link rel=\"icon\" href=\"data:image/svg+xml,",
   "How are the agents harnessed?",
@@ -85,9 +81,9 @@ for (const [content, snippet, message] of removedRevealSnippets) {
 const exactOccurrences = [
   ["Run baseline tests against the original Ubuntu C library package.", 1],
   ["Binary-compatible exported symbols.", 1],
-  ["### Verification Philosophy", 0],
   ["How are the agents harnessed?", 1],
-  ["Port Effort Stats", 1]
+  ["<h2>Ports</h2>", 1],
+  ["<h2>What is this?</h2>", 1]
 ];
 
 for (const [snippet, expectedCount] of exactOccurrences) {
@@ -110,7 +106,8 @@ const renderingExpectations = [
   "<table class=\"stats-table\">",
   "<th scope=\"col\">Recon tokens</th>",
   "<th scope=\"row\"><code>libzstd</code></th><td><code>04-test</code></td><td class=\"numeric\">281</td><td class=\"numeric\">1,775.7M</td><td class=\"numeric\">1.7M</td><td class=\"numeric\">210.7M</td><td class=\"numeric\">514.4M</td><td class=\"numeric\">1,048.9M</td>",
-  "href=\"https://github.com/safelibs/pipeline\" target=\"_blank\" rel=\"noreferrer\">https://github.com/safelibs/pipeline</a>",
+  "href=\"https://github.com/safelibs/pipeline\" target=\"_blank\" rel=\"noreferrer\">pipeline</a>",
+  "href=\"https://github.com/safelibs\" target=\"_blank\" rel=\"noreferrer\">safelibs</a>",
   "<details class=\"notes-block\">",
   "<span class=\"stat-number\">17</span>"
 ];

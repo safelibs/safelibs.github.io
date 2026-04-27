@@ -23,11 +23,13 @@ await mkdir(distDir, { recursive: true });
 const title = matchRequired(markdown, /^# (.+)$/m, "site title")[1].trim();
 const intro = matchRequired(markdown, /^# .+\n\n([\s\S]*?)\n\n## /m, "intro copy")[1].trim();
 const introBlocks = parseBlocks(intro);
-const missionText = getSection("Mission");
-const missionItems = extractListItems(missionText, "Mission");
-const prioritiesText = getSection("Priorities");
-const prioritiesBlocks = parseBlocks(prioritiesText);
-const maintainabilityBlocks = parseBlocks(getSection("Maintainability"));
+const whatSection = getSection("What is this?");
+const whatLeadBlocks = parseBlocks(getSectionLead(whatSection));
+const scopeItems = extractListItems(getSubsection(whatSection, "Scope"), "Scope");
+const prioritiesBlocks = parseBlocks(getSubsection(whatSection, "Priorities, in order"));
+const maintainabilityBlocks = parseBlocks(getSubsection(whatSection, "Maintainability"));
+const providesBlocks = parseBlocks(getSubsection(whatSection, "What a port provides"));
+const verifyBlocks = parseBlocks(getSubsection(whatSection, "How we verify it"));
 const faqEntries = extractSubsections(getSection("FAQ"), "FAQ");
 const pipelineFaq = faqEntries.find((entry) => entry.title === "How are the agents harnessed?");
 
@@ -39,16 +41,10 @@ const pipelineBlocks = parseBlocks(pipelineFaq.body);
 const pipelineListBlock = pipelineBlocks.find((block) => block.type === "ol");
 const pipelineLeadBlocks = pipelineBlocks.filter((block) => block !== pipelineListBlock);
 const pipelineStages = pipelineListBlock ? pipelineListBlock.items : [];
-const projectStructureBlocks = parseBlocks(getSection("Project Structure"));
-getSection("Port Status");
-const effortStatsSection = getSection("Port Effort Stats");
-const effortStatsLeadBlocks = parseBlocks(getSectionLead(effortStatsSection));
-const effortStatsNotesBlocks = parseBlocks(getSubsection(effortStatsSection, "Notes"));
+const portsSection = getSection("Ports");
+const portsLeadBlocks = parseBlocks(getSectionLead(portsSection));
+const portsNotesBlocks = parseBlocks(getSubsection(portsSection, "Notes"));
 const otherEffortsBlocks = parseBlocks(getSection("Other Efforts"));
-const compatibilitySection = getSection("Compatibility Contract");
-const compatibilityLeadText = getSectionLead(compatibilitySection);
-const compatibilityBlocks = parseBlocks(compatibilityLeadText);
-const verificationBlocks = parseBlocks(getSubsection(compatibilitySection, "Verification Philosophy"));
 const metaDescription = truncate(stripMarkdown(intro), 180);
 
 const html = `<!doctype html>
@@ -83,12 +79,10 @@ const html = `<!doctype html>
           </span>
         </a>
         <nav class="top-nav" aria-label="Section navigation">
-          <a href="#mission">Mission</a>
-          <a href="#maintainability">Maintainability</a>
+          <a href="#what">What is this?</a>
           <a href="#pipeline">Pipeline</a>
-          <a href="#effort">Stats</a>
-          <a href="#contract">Contract</a>
-          <a href="#other-efforts">Other</a>
+          <a href="#ports">Ports</a>
+          <a href="#other-efforts">Other efforts</a>
           <a href="#faq">FAQ</a>
         </nav>
       </header>
@@ -100,20 +94,23 @@ const html = `<!doctype html>
             ${renderBlocks(introBlocks)}
           </div>
           <div class="hero-actions">
-            <a class="button button-primary" href="#contract">Compatibility Contract</a>
-            <a class="button" href="#faq">FAQ</a>
+            <a class="button button-primary" href="#what">What is this?</a>
+            <a class="button" href="#ports">Ports</a>
           </div>
         </section>
 
-        <section class="section" id="mission">
+        <section class="section" id="what">
           <div class="section-heading">
-            <h2>Mission</h2>
+            <h2>What is this?</h2>
           </div>
+          <article class="panel prose section-lead">
+            ${renderBlocks(whatLeadBlocks)}
+          </article>
           <div class="split-grid">
             <article class="panel">
               <h3>Scope</h3>
               <ul class="feature-list">
-                ${missionItems.map((item) => `<li>${renderInline(item)}</li>`).join("")}
+                ${scopeItems.map((item) => `<li>${renderInline(item)}</li>`).join("")}
               </ul>
             </article>
             <article class="panel">
@@ -121,15 +118,20 @@ const html = `<!doctype html>
               ${renderBlocks(prioritiesBlocks)}
             </article>
           </div>
-        </section>
-
-        <section class="section" id="maintainability">
-          <div class="section-heading">
-            <h2>Maintainability</h2>
-          </div>
           <article class="panel prose">
+            <h3>Maintainability</h3>
             ${renderBlocks(maintainabilityBlocks)}
           </article>
+          <div class="split-grid">
+            <article class="panel">
+              <h3>What a port provides</h3>
+              ${renderBlocks(providesBlocks)}
+            </article>
+            <article class="panel">
+              <h3>How we verify it</h3>
+              ${renderBlocks(verifyBlocks)}
+            </article>
+          </div>
         </section>
 
         <section class="section" id="pipeline">
@@ -156,63 +158,47 @@ const html = `<!doctype html>
           </div>
         </section>
 
-        <section class="section" id="structure">
+        <section class="section" id="ports">
           <div class="section-heading">
-            <h2>Project Structure</h2>
+            <h2>Ports</h2>
+          </div>
+          <div class="ports-summary">
+            <article class="panel stat-card">
+              <span class="stat-number">${escapeHtml(statsTokens.validating_count)}</span>
+              <span class="stat-label">libraries passing <a href="https://safelibs.org/validator" target="_blank" rel="noreferrer">validation</a></span>
+            </article>
+            <article class="panel">
+              <h3>In progress</h3>
+              ${
+                statsTokens.in_progress.length
+                  ? `<ul class="in-progress-list">${statsTokens.in_progress
+                      .map(
+                        (entry) =>
+                          `<li><code>${escapeHtml(entry.name)}</code><span class="stage-badge stage-${escapeAttribute(entry.stage)}">${escapeHtml(entry.stage)}</span></li>`
+                      )
+                      .join("")}</ul>`
+                  : `<p class="muted">All current ports are passing validation.</p>`
+              }
+            </article>
           </div>
           <article class="panel prose">
-            ${renderBlocks(projectStructureBlocks)}
-          </article>
-        </section>
-
-        <section class="section" id="status">
-          <div class="section-heading">
-            <h2>Port Status</h2>
-          </div>
-          <article class="panel stat-card stat-card-wide">
-            <span class="stat-number">${escapeHtml(statsTokens.validating_count)}</span>
-            <span class="stat-label">libraries passing <a href="https://safelibs.org/validator" target="_blank" rel="noreferrer">validation</a></span>
-          </article>
-        </section>
-
-        <section class="section" id="effort">
-          <div class="section-heading">
-            <h2>Port Effort Stats</h2>
-          </div>
-          <article class="panel prose">
-            ${renderBlocks(effortStatsLeadBlocks)}
+            ${renderBlocks(portsLeadBlocks)}
           </article>
           <details class="notes-block">
             <summary>How to read this table</summary>
             <div class="notes-content">
-              ${renderBlocks(effortStatsNotesBlocks)}
+              ${renderBlocks(portsNotesBlocks)}
             </div>
           </details>
         </section>
 
         <section class="section" id="other-efforts">
           <div class="section-heading">
-            <h2>Other Efforts</h2>
+            <h2>Other efforts</h2>
           </div>
           <article class="panel prose">
             ${renderBlocks(otherEffortsBlocks)}
           </article>
-        </section>
-
-        <section class="section" id="contract">
-          <div class="section-heading">
-            <h2>Compatibility Contract</h2>
-          </div>
-          <div class="split-grid">
-            <article class="panel">
-              <h3>What a port provides</h3>
-              ${renderBlocks(compatibilityBlocks)}
-            </article>
-            <article class="panel">
-              <h3>How we verify it</h3>
-              ${renderBlocks(verificationBlocks)}
-            </article>
-          </div>
         </section>
 
         <section class="section" id="faq">
@@ -235,6 +221,13 @@ const html = `<!doctype html>
           </div>
         </section>
       </main>
+
+      <footer class="site-footer">
+        <p class="footer-line">
+          Code lives in the <a href="https://github.com/safelibs" target="_blank" rel="noreferrer">safelibs</a> GitHub org —
+          one <code>port-LIBNAME</code> repo per library, plus the <a href="https://github.com/safelibs/pipeline" target="_blank" rel="noreferrer">pipeline</a> that drives them.
+        </p>
+      </footer>
     </div>
   </body>
 </html>
@@ -596,10 +589,10 @@ function extractValidatingLibraries(siteData, mode) {
 }
 
 function applyValidatorFilter(text, validating) {
-  const sectionPattern = /(^## Port Effort Stats\n\n[\s\S]*?)(?=^## )/m;
+  const sectionPattern = /(^## Ports\n\n[\s\S]*?)(?=^## )/m;
   const sectionMatch = `${text}\n## __END__`.match(sectionPattern);
   if (!sectionMatch) {
-    throw new Error("Unable to locate Port Effort Stats section in contents.md");
+    throw new Error("Unable to locate Ports section in contents.md");
   }
   const originalSection = sectionMatch[1];
 
@@ -616,7 +609,7 @@ function applyValidatorFilter(text, validating) {
     }
   }
   if (headerIndex === -1) {
-    throw new Error("Unable to locate Port Effort Stats table in contents.md");
+    throw new Error("Unable to locate Ports table in contents.md");
   }
 
   let endIndex = headerIndex + 2;
@@ -626,6 +619,8 @@ function applyValidatorFilter(text, validating) {
 
   const dataRows = lines.slice(headerIndex + 2, endIndex);
   const filteredRows = [];
+  const inProgress = [];
+  const stageOrder = ["recon", "setup", "port", "test"];
   const stats = {
     sessions: 0,
     totalTokens: 0,
@@ -644,6 +639,14 @@ function applyValidatorFilter(text, validating) {
     const cells = parseTableRow(row);
     const libraryName = stripBacktickName(cells[0] || "");
     if (!validating.has(libraryName)) {
+      const completedStage = stripBacktickName(cells[1] || "");
+      const stageMatch = completedStage.match(/^0?(\d)-(\w+)$/);
+      let nextStage = "recon";
+      if (stageMatch) {
+        const completedNum = Number.parseInt(stageMatch[1], 10);
+        nextStage = stageOrder[completedNum] || "test";
+      }
+      inProgress.push({ name: libraryName, stage: nextStage });
       continue;
     }
     filteredRows.push(row);
@@ -659,6 +662,13 @@ function applyValidatorFilter(text, validating) {
     stats.abiUnsafe += parseTableNumber(cells[11]);
     stats.otherUnsafe += parseTableNumber(cells[12]);
   }
+
+  inProgress.sort((a, b) => {
+    const ai = stageOrder.indexOf(a.stage);
+    const bi = stageOrder.indexOf(b.stage);
+    if (ai !== bi) return ai - bi;
+    return a.name.localeCompare(b.name);
+  });
 
   if (filteredRows.length === 0) {
     throw new Error(
@@ -696,7 +706,7 @@ function applyValidatorFilter(text, validating) {
     }
     throw new Error(`Unknown placeholder ${match} in contents.md`);
   });
-  return { text: finalText, tokens };
+  return { text: finalText, tokens: { ...tokens, in_progress: inProgress } };
 }
 
 function isTableSeparatorLine(line) {

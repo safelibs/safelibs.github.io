@@ -2,23 +2,45 @@
 
 SafeLibs builds memory-safe (Rust) reimplementations of critical load-bearing C/C++ libraries used throughout open source infrastructure, while attempting to preserve drop-in compatibility at compile-time and runtime.
 
-## Mission
+## What is this?
+
+SafeLibs maintains Rust reimplementations of widely-used C/C++ libraries. Each port ships as a `.deb` that's binary-compatible with the original Ubuntu library package — existing C consumers relink against it without source changes.
+
+### Scope
 
 - Rewrite widely-used C/C++ libraries in Rust for memory safety.
 - Hold the original C ABI so existing binaries relink unchanged.
 - Match the upstream library's performance — not a soft-fork approximation of it.
 
-## Priorities
+### Priorities, in order
 
 1. Drop-in compile-time and runtime compatibility.
 2. Performance.
 3. Memory safety.
 
-## Maintainability
+### Maintainability
 
-Per-port maintainability isn't a goal. The ports are regenerable artifacts: when an upstream release lands, we re-run the pipeline against the new source instead of hand-patching the Rust output (eventually nightly, if the economics work out).
+Per-port maintainability isn't a goal. The ports are regenerable artifacts: when upstream changes, we re-run the pipeline against the new source instead of hand-patching the Rust output (eventually nightly, if the economics work out). For the same reason we don't take code PRs against the ported libraries — we don't audit the generated Rust closely enough to reason about adversarial patches. Reproducer issues are a different story; see the FAQ.
 
-That model is also why we don't take code PRs against the ported libraries — we don't audit the generated Rust closely enough to reason about adversarial patches. Reproducer issues are a different story; see the FAQ.
+### What a port provides
+
+A completed SafeLibs port should provide:
+
+- Binary-compatible exported symbols.
+- C headers compatible with existing consumer builds.
+- Equivalent runtime semantics for valid inputs.
+- Upstream test-suite parity plus consumer integration validation.
+
+### How we verify it
+
+SafeLibs verification is clean-room by design:
+
+- Run baseline tests against the original Ubuntu C library package.
+- Purge original runtime/dev packages from the test environment.
+- Install SafeLibs-generated `.deb` replacements.
+- Re-run the exact same tests and consumer checks.
+
+If a port still forwards to the original C implementation, the replacement stage fails after purge.
 
 ## FAQ
 
@@ -84,16 +106,7 @@ The current focus is Ubuntu drop-in replacements via apt, which forces strict AB
 
 We can't accept code patches against the ported libraries — we don't audit the generated Rust closely enough to reason about adversarial PRs. We _do_ accept reproducer testcases against the [validator repo](https://github.com/safelibs/validator) — the Test stage picks those up and re-runs the affected port until it passes.
 
-## Project Structure
-
-- Each target library lives in its own `port-LIBNAME` repo under https://github.com/safelibs
-- The pipeline that drives every port lives at https://github.com/safelibs/pipeline
-
-## Port Status
-
-{{validating_count}} libraries passing [validation](https://safelibs.org/validator).
-
-## Port Effort Stats
+## Ports
 
 Across the {{validating_count}} validating ports so far: **{{total_sessions}} sessions, {{total_tokens_b}}B tokens, {{total_agent_hours}} agent-hours**, split {{recon_tokens_b}}B recon, {{setup_tokens_b}}B setup, {{port_tokens_b}}B port, {{test_tokens_b}}B test.
 
@@ -137,22 +150,3 @@ Stage columns track each repo's `01-recon`/`02-setup`/`03-port`/`04-test` tags. 
 - DARPA's [TRACTOR program](https://www.darpa.mil/research/programs/translating-all-c-to-rust) (Translating All C To Rust) is the broader DoD-funded push behind agentic C-to-Rust translation, and a conceptual ancestor of work like this.
 - The "ralph loop" pattern at https://github.com/snarktank/ralph is a popular minimal harness for keeping agents on-task across long jobs; SafeLibs uses a structured planning + validation pipeline instead, but starts from the same observation that agents quit early on big tasks.
 
-## Compatibility Contract
-
-A completed SafeLibs port should provide:
-
-- Binary-compatible exported symbols.
-- C headers compatible with existing consumer builds.
-- Equivalent runtime semantics for valid inputs.
-- Upstream test-suite parity plus consumer integration validation.
-
-### Verification Philosophy
-
-SafeLibs verification is clean-room by design:
-
-- Run baseline tests against the original Ubuntu C library package.
-- Purge original runtime/dev packages from the test environment.
-- Install SafeLibs-generated `.deb` replacements.
-- Re-run the exact same tests and consumer checks.
-
-If a port still forwards to the original C implementation, the replacement stage fails after purge.
