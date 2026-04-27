@@ -56,7 +56,7 @@ Each port runs through the same swap test:
 
 ### How many tokens does this take?
 
-Any answer to this question will be meaningless, because it will be obsolete in a few weeks and I don't want to update this README that often.
+Any specific answer will be obsolete in a few weeks. But if you really want the order of magnitude: about **{{total_tokens_b}}B** tokens across the {{validating_count}} validating ports so far, averaging out to roughly tens to hundreds of millions per library depending on size and how cleanly the C source factored. Per-library breakdown lives in [The Ports](#ports).
 
 ### Do you guarantee I won't get hacked?
 

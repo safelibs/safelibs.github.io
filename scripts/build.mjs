@@ -457,9 +457,11 @@ function renderInline(text) {
   let output = text;
 
   output = output.replace(/`([^`]+)`/g, (_, code) => placeholder(`<code>${escapeHtml(code)}</code>`));
-  output = output.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, (_, label, url) =>
-    placeholder(`<a href="${escapeAttribute(url)}" target="_blank" rel="noreferrer">${escapeHtml(label)}</a>`)
-  );
+  output = output.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, url) => {
+    const isExternal = /^https?:\/\//.test(url);
+    const attrs = isExternal ? ' target="_blank" rel="noreferrer"' : "";
+    return placeholder(`<a href="${escapeAttribute(url)}"${attrs}>${escapeHtml(label)}</a>`);
+  });
   output = output.replace(/https?:\/\/[^\s<)]+/g, (url) =>
     placeholder(`<a href="${escapeAttribute(url)}" target="_blank" rel="noreferrer">${escapeHtml(url)}</a>`)
   );
