@@ -158,7 +158,7 @@ Stage columns track each repo's `01-recon`/`02-setup`/`03-port`/`04-test` tags. 
 
 **ABI unsafe** is forced by the C surface — functions taking `*const T`/`*mut T`, `extern "C"` functions, or `unsafe fn` exposed across the FFI boundary. **Other unsafe** is everything else: transmutes, raw allocator handoff, intrinsics, `static mut`. The ABI share is the cost of drop-in compatibility; a Rust-only consumer story, or a non-ABI-stable distro target like Nix, would let a future pipeline drop a large fraction of those blocks.
 
-## Who's responsible for this?
+## Who's responsible?
 
 Like many cool things, this project started out as idle speculation and then got out of hand.
 The guilty parties:
