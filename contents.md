@@ -84,20 +84,21 @@ The pipeline itself lives in https://github.com/safelibs/pipeline
 
 ## Port Status
 
-As of April 21, 2026, the SafeLibs org has 24 library `port-*` repositories under active work, plus the shared `port-template` repository.
+As of April 21, 2026, the SafeLibs org has {{validating_count}} library `port-*` repositories that currently pass the validator proof at `port-04-test`, plus the shared `port-template` repository.
 They are all private right now, so this public site is intentionally not pretending to have a live public scoreboard yet.
 When the verification artifacts are ready to expose, this section should show actual compatibility results instead of vibes.
 
 ## Port Effort Stats
 
-Per-library token spend, agent time, and unsafe-block counts across the 24 active `port-*` repos.
-In total: **6,251 sessions, 19.93B tokens, 1,129.5 agent-hours** from March 27 to April 11, 2026 UTC, with a stage-token split of 2.63B recon, 2.90B setup, 8.50B port, 5.90B test.
+Per-library token spend, agent time, and unsafe-block counts across the {{validating_count}} validating `port-*` repos.
+The validator at https://safelibs.github.io/validator/site-data.json drives this list, and rows are filtered at site-build time so the table follows live validator results.
+In total: **{{total_sessions}} sessions, {{total_tokens_b}}B tokens, {{total_agent_hours}} agent-hours** from March 27 to April 11, 2026 UTC, with a stage-token split of {{recon_tokens_b}}B recon, {{setup_tokens_b}}B setup, {{port_tokens_b}}B port, {{test_tokens_b}}B test.
 
-Stage columns follow each repo's `01-recon`/`02-setup`/`03-port`/`04-test` tags; sessions past the last completed tag count toward the next in-progress stage, which is why `glib`, `libc6`, and `libcurl` show port-stage spend at `02-setup`, and `libgcrypt` shows test-stage spend at `03-port`.
+Stage columns follow each repo's `01-recon`/`02-setup`/`03-port`/`04-test` tags; sessions past the last completed tag count toward the next in-progress stage, which is why ports still in earlier stages show partial column coverage.
 Agent time is the sum of per-session wall time, so parallel sessions add up as parallel agent-hours.
 
 The unsafe columns split each port's `unsafe { ... }` blocks two ways: **ABI unsafe** is forced by the C surface (functions taking `*const T`/`*mut T`, `extern "C"` functions, or `unsafe fn` exposed across the FFI boundary), and **Other unsafe** is everything else — transmutes, raw allocator handoff, intrinsics, `static mut`, etc.
-Across all 24 ports: **17,626** blocks total, 13,450 (76.3%) ABI and 4,176 (23.7%) other.
+Across all {{validating_count}} validating ports: **{{total_unsafe}}** blocks total, {{abi_unsafe}} ({{abi_unsafe_pct}}%) ABI and {{other_unsafe}} ({{other_unsafe_pct}}%) other.
 
 | Library | Completed stage | Sessions | Total tokens | Recon tokens | Setup tokens | Port tokens | Test tokens | Agent time | Calendar span | Total unsafe | ABI unsafe | Other unsafe | Difficulty notes |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |

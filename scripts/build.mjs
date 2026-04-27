@@ -5,7 +5,17 @@ import { fileURLToPath } from "node:url";
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const srcDir = join(rootDir, "src");
 const distDir = join(rootDir, "dist");
-const markdown = await readFile(join(rootDir, "contents.md"), "utf8");
+const rawMarkdown = await readFile(join(rootDir, "contents.md"), "utf8");
+
+const DEFAULT_VALIDATOR_URL = "https://safelibs.github.io/validator/site-data.json";
+const DEFAULT_VALIDATOR_MODE = "port-04-test";
+const validatorUrl = process.env.SAFELIBS_VALIDATOR_URL || DEFAULT_VALIDATOR_URL;
+const validatorMode = process.env.SAFELIBS_VALIDATOR_MODE || DEFAULT_VALIDATOR_MODE;
+const validatorFixturePath = process.env.SAFELIBS_VALIDATOR_FIXTURE;
+
+const validatorSiteData = await loadValidatorSiteData(validatorUrl, validatorFixturePath);
+const validatingLibraries = extractValidatingLibraries(validatorSiteData, validatorMode);
+const markdown = applyValidatorFilter(rawMarkdown, validatingLibraries);
 
 await rm(distDir, { force: true, recursive: true });
 await mkdir(distDir, { recursive: true });
@@ -529,4 +539,199 @@ function escapeAttribute(value) {
 
 function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+async function loadValidatorSiteData(url, fixturePath) {
+  if (fixturePath) {
+    const text = await readFile(fixturePath, "utf8");
+    return JSON.parse(text);
+  }
+
+  const response = await fetch(url, {
+    headers: { "User-Agent": "safelibs-website" }
+  });
+  if (!response.ok) {
+    throw new Error(`Failed to fetch validator site data from ${url}: HTTP ${response.status}`);
+  }
+  return response.json();
+}
+
+function extractValidatingLibraries(siteData, mode) {
+  if (!siteData || typeof siteData !== "object") {
+    throw new Error("Validator site data must be a JSON object");
+  }
+  if (siteData.schema_version !== 2) {
+    throw new Error(
+      `Unsupported validator schema_version ${JSON.stringify(siteData.schema_version)}; expected 2`
+    );
+  }
+  const proofs = Array.isArray(siteData.proofs) ? siteData.proofs : [];
+  const proof = proofs.find((entry) => entry && entry.mode === mode);
+  if (!proof) {
+    throw new Error(`Validator proof for mode ${JSON.stringify(mode)} was not found`);
+  }
+  const validating = new Set();
+  for (const entry of proof.libraries || []) {
+    if (!entry || typeof entry !== "object") {
+      continue;
+    }
+    const totals = entry.totals || {};
+    if (
+      totals.failed === 0 &&
+      totals.passed === totals.cases &&
+      typeof totals.cases === "number" &&
+      totals.cases > 0
+    ) {
+      const name = String(entry.library || "").trim();
+      if (name) {
+        validating.add(name);
+      }
+    }
+  }
+  return validating;
+}
+
+function applyValidatorFilter(text, validating) {
+  const sectionPattern = /(^## Port Effort Stats\n\n[\s\S]*?)(?=^## )/m;
+  const sectionMatch = `${text}\n## __END__`.match(sectionPattern);
+  if (!sectionMatch) {
+    throw new Error("Unable to locate Port Effort Stats section in contents.md");
+  }
+  const originalSection = sectionMatch[1];
+
+  const lines = originalSection.split("\n");
+  let headerIndex = -1;
+  for (let i = 0; i < lines.length; i += 1) {
+    if (
+      lines[i].trim().startsWith("|") &&
+      lines[i + 1] &&
+      isTableSeparatorLine(lines[i + 1])
+    ) {
+      headerIndex = i;
+      break;
+    }
+  }
+  if (headerIndex === -1) {
+    throw new Error("Unable to locate Port Effort Stats table in contents.md");
+  }
+
+  let endIndex = headerIndex + 2;
+  while (endIndex < lines.length && lines[endIndex].trim().startsWith("|")) {
+    endIndex += 1;
+  }
+
+  const dataRows = lines.slice(headerIndex + 2, endIndex);
+  const filteredRows = [];
+  const stats = {
+    sessions: 0,
+    totalTokens: 0,
+    reconTokens: 0,
+    setupTokens: 0,
+    portTokens: 0,
+    testTokens: 0,
+    agentHours: 0,
+    totalUnsafe: 0,
+    abiUnsafe: 0,
+    otherUnsafe: 0,
+    count: 0
+  };
+
+  for (const row of dataRows) {
+    const cells = parseTableRow(row);
+    const libraryName = stripBacktickName(cells[0] || "");
+    if (!validating.has(libraryName)) {
+      continue;
+    }
+    filteredRows.push(row);
+    stats.count += 1;
+    stats.sessions += parseTableNumber(cells[2]);
+    stats.totalTokens += parseTableNumber(cells[3]);
+    stats.reconTokens += parseTableNumber(cells[4]);
+    stats.setupTokens += parseTableNumber(cells[5]);
+    stats.portTokens += parseTableNumber(cells[6]);
+    stats.testTokens += parseTableNumber(cells[7]);
+    stats.agentHours += parseTableNumber(cells[8]);
+    stats.totalUnsafe += parseTableNumber(cells[10]);
+    stats.abiUnsafe += parseTableNumber(cells[11]);
+    stats.otherUnsafe += parseTableNumber(cells[12]);
+  }
+
+  if (filteredRows.length === 0) {
+    throw new Error(
+      "Validator filter removed every Port Effort Stats row; refusing to render an empty table"
+    );
+  }
+
+  const updatedLines = [
+    ...lines.slice(0, headerIndex + 2),
+    ...filteredRows,
+    ...lines.slice(endIndex)
+  ];
+  const filteredSection = updatedLines.join("\n");
+
+  const tokens = {
+    validating_count: String(stats.count),
+    total_sessions: formatThousands(stats.sessions),
+    total_tokens_b: formatBillions(stats.totalTokens),
+    total_agent_hours: stats.agentHours.toFixed(1),
+    recon_tokens_b: formatBillions(stats.reconTokens),
+    setup_tokens_b: formatBillions(stats.setupTokens),
+    port_tokens_b: formatBillions(stats.portTokens),
+    test_tokens_b: formatBillions(stats.testTokens),
+    total_unsafe: formatThousands(stats.totalUnsafe),
+    abi_unsafe: formatThousands(stats.abiUnsafe),
+    other_unsafe: formatThousands(stats.otherUnsafe),
+    abi_unsafe_pct: percent(stats.abiUnsafe, stats.totalUnsafe),
+    other_unsafe_pct: percent(stats.otherUnsafe, stats.totalUnsafe)
+  };
+
+  let finalText = text.replace(originalSection, filteredSection);
+  finalText = finalText.replace(/\{\{(\w+)\}\}/g, (match, key) => {
+    if (Object.prototype.hasOwnProperty.call(tokens, key)) {
+      return tokens[key];
+    }
+    throw new Error(`Unknown placeholder ${match} in contents.md`);
+  });
+  return finalText;
+}
+
+function isTableSeparatorLine(line) {
+  if (!line || !line.trim().startsWith("|")) {
+    return false;
+  }
+  const cells = parseTableRow(line);
+  return cells.length > 1 && cells.every((cell) => /^:?-{3,}:?$/.test(cell));
+}
+
+function stripBacktickName(cell) {
+  return String(cell).replace(/`/g, "").trim();
+}
+
+function parseTableNumber(cell) {
+  if (cell == null) {
+    return 0;
+  }
+  const trimmed = String(cell).trim();
+  if (!trimmed || trimmed === "-") {
+    return 0;
+  }
+  const cleaned = trimmed.replace(/,/g, "").replace(/[Mh]$/, "");
+  const value = Number.parseFloat(cleaned);
+  return Number.isFinite(value) ? value : 0;
+}
+
+function formatThousands(value) {
+  return Math.round(value).toLocaleString("en-US");
+}
+
+function formatBillions(valueInM) {
+  const billions = valueInM / 1000;
+  return billions.toFixed(2);
+}
+
+function percent(part, total) {
+  if (!total) {
+    return "0.0";
+  }
+  return ((part * 100) / total).toFixed(1);
 }

@@ -5,9 +5,14 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const validatorFixture = join(rootDir, "tests", "fixtures", "validator-site-data.json");
 const build = spawnSync("node", ["scripts/build.mjs"], {
   cwd: rootDir,
-  encoding: "utf8"
+  encoding: "utf8",
+  env: {
+    ...process.env,
+    SAFELIBS_VALIDATOR_FIXTURE: validatorFixture
+  }
 });
 
 if (build.status !== 0) {
@@ -98,13 +103,12 @@ const renderingExpectations = [
   "or the <code>unsafe</code> parts of these libraries",
   "<em>I</em> don&#39;t use these things",
   "<p>A completed SafeLibs port should provide:</p>",
-  "As of April 21, 2026, the SafeLibs org has 24 library <code>port-*</code> repositories under active work",
-  "<strong>6,251 sessions, 19.93B tokens, 1,129.5 agent-hours</strong>",
-  "stage-token split of 2.63B recon, 2.90B setup, 8.50B port, 5.90B test.",
+  "As of April 21, 2026, the SafeLibs org has 17 library <code>port-*</code> repositories that currently pass the validator proof",
+  "<strong>4,524 sessions, 11.23B tokens, 682.0 agent-hours</strong>",
+  "stage-token split of 0.98B recon, 1.75B setup, 4.79B port, 3.71B test.",
   "<table class=\"stats-table\">",
   "<th scope=\"col\">Recon tokens</th>",
   "<th scope=\"row\"><code>libzstd</code></th><td><code>04-test</code></td><td class=\"numeric\">281</td><td class=\"numeric\">1,775.7M</td><td class=\"numeric\">1.7M</td><td class=\"numeric\">210.7M</td><td class=\"numeric\">514.4M</td><td class=\"numeric\">1,048.9M</td>",
-  "GIRepository, symbol versions, Meson/package surfaces, and staged runtime checks already forced repeated verifier cycles.",
   "href=\"https://github.com/safelibs/safelibs.github.io\" target=\"_blank\" rel=\"noreferrer\">https://github.com/safelibs/safelibs.github.io</a>"
 ];
 
@@ -119,7 +123,16 @@ const removedSnippets = [
   "Sharp edges acknowledged",
   "Serious about compatibility. Honest about risk.",
   "Real port work, intentionally sparse public status",
-  "<th scope=\"row\"><code>libssl</code></th>"
+  "<th scope=\"row\"><code>libssl</code></th>",
+  "{{validating_count}}",
+  "{{total_sessions}}",
+  "<th scope=\"row\"><code>glib</code></th>",
+  "<th scope=\"row\"><code>libc6</code></th>",
+  "<th scope=\"row\"><code>libcurl</code></th>",
+  "<th scope=\"row\"><code>libgcrypt</code></th>",
+  "<th scope=\"row\"><code>libpng</code></th>",
+  "<th scope=\"row\"><code>libsdl</code></th>",
+  "<th scope=\"row\"><code>libvips</code></th>"
 ];
 
 for (const snippet of removedSnippets) {
