@@ -103,35 +103,21 @@ const html = `<!doctype html>
           <div class="section-heading">
             <h2>What is this?</h2>
           </div>
-          <article class="panel prose section-lead">
-            ${renderBlocks(whatLeadBlocks)}
-          </article>
-          <div class="split-grid">
-            <article class="panel">
-              <h3>Scope</h3>
-              <ul class="feature-list">
-                ${scopeItems.map((item) => `<li>${renderInline(item)}</li>`).join("")}
-              </ul>
-            </article>
-            <article class="panel">
-              <h3>Priorities, in order</h3>
-              ${renderBlocks(prioritiesBlocks)}
-            </article>
-          </div>
-          <article class="panel prose">
+          <article class="what-article">
+            <div class="lead">${renderBlocks(whatLeadBlocks)}</div>
+            <h3>Scope</h3>
+            <ul>
+              ${scopeItems.map((item) => `<li>${renderInline(item)}</li>`).join("")}
+            </ul>
+            <h3>Priorities, in order</h3>
+            ${renderBlocks(prioritiesBlocks)}
             <h3>Maintainability</h3>
             ${renderBlocks(maintainabilityBlocks)}
+            <h3>What a port provides</h3>
+            ${renderBlocks(providesBlocks)}
+            <h3>How we verify it</h3>
+            ${renderBlocks(verifyBlocks)}
           </article>
-          <div class="split-grid">
-            <article class="panel">
-              <h3>What a port provides</h3>
-              ${renderBlocks(providesBlocks)}
-            </article>
-            <article class="panel">
-              <h3>How we verify it</h3>
-              ${renderBlocks(verifyBlocks)}
-            </article>
-          </div>
         </section>
 
         <section class="section" id="pipeline">
@@ -162,34 +148,35 @@ const html = `<!doctype html>
           <div class="section-heading">
             <h2>Ports</h2>
           </div>
-          <div class="ports-summary">
-            <article class="panel stat-card">
-              <span class="stat-number">${escapeHtml(statsTokens.validating_count)}</span>
-              <span class="stat-label">libraries passing <a href="https://safelibs.org/validator" target="_blank" rel="noreferrer">validation</a></span>
-            </article>
-            <article class="panel">
-              <h3>In progress</h3>
-              ${
+          <div class="ports-headline">
+            <p class="ports-headline-line">
+              <span class="big-number">${escapeHtml(statsTokens.validating_count)}</span>
+              libraries passing <a href="https://safelibs.org/validator" target="_blank" rel="noreferrer">validation</a>${
                 statsTokens.in_progress.length
-                  ? `<ul class="in-progress-list">${statsTokens.in_progress
-                      .map(
-                        (entry) =>
-                          `<li><code>${escapeHtml(entry.name)}</code><span class="stage-badge stage-${escapeAttribute(entry.stage)}">${escapeHtml(entry.stage)}</span></li>`
-                      )
-                      .join("")}</ul>`
-                  : `<p class="muted">All current ports are passing validation.</p>`
-              }
-            </article>
+                  ? `, plus <span class="big-number small">${statsTokens.in_progress.length}</span> in progress`
+                  : ""
+              }.
+            </p>
+            ${
+              statsTokens.in_progress.length
+                ? `<ul class="in-progress-list">${statsTokens.in_progress
+                    .map(
+                      (entry) =>
+                        `<li><code>${escapeHtml(entry.name)}</code><span class="stage-badge stage-${escapeAttribute(entry.stage)}">${escapeHtml(entry.stage)}</span></li>`
+                    )
+                    .join("")}</ul>`
+                : ""
+            }
           </div>
-          <article class="panel prose">
+          <div class="ports-article">
             ${renderBlocks(portsLeadBlocks)}
-          </article>
-          <details class="notes-block">
-            <summary>How to read this table</summary>
-            <div class="notes-content">
-              ${renderBlocks(portsNotesBlocks)}
-            </div>
-          </details>
+            <details class="notes-block">
+              <summary>How to read this table</summary>
+              <div class="notes-content">
+                ${renderBlocks(portsNotesBlocks)}
+              </div>
+            </details>
+          </div>
         </section>
 
         <section class="section" id="other-efforts">
@@ -223,10 +210,7 @@ const html = `<!doctype html>
       </main>
 
       <footer class="site-footer">
-        <p class="footer-line">
-          Code lives in the <a href="https://github.com/safelibs" target="_blank" rel="noreferrer">safelibs</a> GitHub org —
-          one <code>port-LIBNAME</code> repo per library, plus the <a href="https://github.com/safelibs/pipeline" target="_blank" rel="noreferrer">pipeline</a> that drives them.
-        </p>
+        <a href="https://github.com/safelibs" target="_blank" rel="noreferrer">github.com/safelibs</a>
       </footer>
     </div>
   </body>
