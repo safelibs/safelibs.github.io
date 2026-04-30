@@ -18,7 +18,7 @@ const VALIDATOR_LINK = "https://safelibs.org/validator";
 const ORG_LINK = "https://github.com/safelibs";
 
 const DEFAULT_VALIDATOR_URL = "https://safelibs.github.io/validator/site-data.json";
-const DEFAULT_VALIDATOR_MODE = "port-04-test";
+const DEFAULT_VALIDATOR_MODE = "port";
 const validatorUrl = process.env.SAFELIBS_VALIDATOR_URL || DEFAULT_VALIDATOR_URL;
 const validatorMode = process.env.SAFELIBS_VALIDATOR_MODE || DEFAULT_VALIDATOR_MODE;
 const validatorFixturePath = process.env.SAFELIBS_VALIDATOR_FIXTURE;

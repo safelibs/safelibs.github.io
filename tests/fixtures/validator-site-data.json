@@ -408,7 +408,7 @@
       ]
     },
     {
-      "mode": "port-04-test",
+      "mode": "port",
       "suite": {
         "name": "ubuntu-24.04-original-apt",
         "image": "ubuntu:24.04",
